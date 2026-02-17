@@ -11,7 +11,26 @@
         .btn-primary { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); transition: all 0.3s; }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
         .card { background: white; border-radius: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 10px 15px -5px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; transition: all 0.2s; }
+        .card-hover:hover { border-color: #dbeafe; background-color: #fdfdfd; }
         
+        .form-input-std {
+            width: 100%;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        .form-input-std:focus {
+            background-color: #ffffff;
+            border-color: #3b82f6;
+            ring: 2px;
+            ring-color: #bfdbfe;
+            outline: none;
+        }
+
         .status-select { 
             padding: 4px 12px; 
             border-radius: 999px; 
@@ -28,46 +47,46 @@
         .border-female { border: 2px solid #f472b6 !important; border-left-width: 8px !important; }
         .border-other { border: 2px solid #cbd5e1 !important; border-left-width: 8px !important; }
 
-        .info-pill { background: #f8fafc; border: 1px solid #f1f5f9; padding: 6px 12px; border-radius: 10px; font-size: 12px; font-weight: 700; color: #475569; display: inline-flex; align-items: center; gap: 4px; }
-        .area-tag { background: #eff6ff; color: #2563eb; border: 1px solid #dbeafe; padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; transition: all 0.2s; }
-        .area-tag:hover { background: #dbeafe; }
+        .info-pill { background: #f8fafc; border: 1px solid #f1f5f9; padding: 6px 14px; border-radius: 10px; font-size: 11px; font-weight: 700; color: #475569; display: inline-flex; align-items: center; gap: 4px; min-width: 80px; justify-content: center; }
+        .area-tag { background: #eff6ff; color: #2563eb; border: 1px solid #dbeafe; padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; transition: all 0.2s; text-decoration: none; }
+        .area-tag:hover { background: #dbeafe; text-decoration: underline; }
+        
+        .building-tag { background: #fef2f2; color: #ef4444; border: 1px solid #fee2e2; padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 3px; }
+        .building-tag:hover { background: #fee2e2; text-decoration: underline; }
+
         .note-tag { background: #f0fdf4; color: #16a34a; border: 1px solid #dcfce7; padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 800; }
 
         .filter-select { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 8px 12px; font-size: 12px; font-weight: 700; outline: none; transition: all 0.2s; width: 100%; }
+        .filter-date-search { background: #f1f5f9; border: 2px solid transparent; border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 800; outline: none; transition: all 0.2s; width: 100%; color: #1e293b; height: 48px; }
 
         .modal-bg { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); }
-        .copy-hint { cursor: pointer; transition: opacity 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .copy-hint:active { opacity: 0.5; }
         
-        .text-empty { color: #cbd5e1; font-style: italic; font-weight: 500; font-size: 0.85rem; }
-        
+        .text-empty { color: #94a3b8; font-weight: 500; }
         .custom-scroll::-webkit-scrollbar { width: 6px; }
         .custom-scroll::-webkit-scrollbar-track { background: transparent; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
 
         .quick-insert-btn { padding: 4px 8px; font-size: 10px; font-weight: 700; background: white; color: #64748b; border: 1px solid #e2e8f0; border-radius: 8px; transition: all 0.2s; white-space: nowrap; cursor: pointer; }
         .quick-insert-btn:hover { border-color: #3b82f6; color: #2563eb; background: #eff6ff; transform: translateY(-1px); }
-        .quick-insert-btn.blue { color: #2563eb; border-color: #dbeafe; }
-        .quick-insert-btn.green { color: #16a34a; border-color: #dcfce7; }
-        .quick-insert-btn.amber { color: #d97706; border-color: #fef3c7; }
-        .quick-insert-btn.red { color: #ef4444; border-color: #fee2e2; }
 
-        .data-manage-btn { padding: 8px 16px; font-size: 12px; font-weight: 800; border-radius: 12px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
-        
-        /* 備註專用快速標籤 */
-        .note-quick-tag { 
-            font-size: 10px; 
-            padding: 3px 8px; 
-            background: #f1f5f9; 
-            color: #475569; 
-            border-radius: 6px; 
-            cursor: pointer; 
-            transition: all 0.2s; 
-            border: 1px solid transparent;
-            font-weight: 600;
-        }
+        .note-quick-tag { font-size: 10px; padding: 3px 8px; background: #f1f5f9; color: #475569; border-radius: 6px; cursor: pointer; transition: all 0.2s; border: 1px solid transparent; font-weight: 600; }
         .note-quick-tag:hover { background: #e2e8f0; color: #1e293b; border-color: #cbd5e1; }
-        .note-quick-tag:active { transform: scale(0.95); }
+
+        .line-text { color: #00c300; font-weight: 900; }
+        .clickable-name { cursor: pointer; transition: color 0.2s; }
+        .clickable-name:hover { color: #2563eb; text-decoration: underline; }
+
+        .budget-badge {
+            background: #1e3a8a;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 900;
+            padding: 8px 16px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            letter-spacing: -0.025em;
+        }
     </style>
 </head>
 <body class="p-3 md:p-6">
@@ -76,11 +95,11 @@
         <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 gap-4">
             <h1 class="text-2xl md:text-3xl font-black text-slate-900 italic tracking-tighter">CRM <span class="text-blue-600">PRO</span></h1>
             <div class="flex items-center gap-3 w-full md:w-auto">
-                <div class="text-[10px] font-bold text-slate-400 bg-white px-3 py-1 rounded-full border border-slate-100 hidden lg:block">智慧客管系統 v3.6</div>
+                <div class="text-[10px] font-bold text-slate-400 bg-white px-3 py-1 rounded-full border border-slate-100 hidden lg:block">智慧客管系統 v4.6</div>
                 <div class="flex gap-2 w-full md:w-auto">
-                    <button onclick="exportToCSV()" class="flex-1 md:flex-none data-manage-btn bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 justify-center">📤 匯出 CSV</button>
-                    <label class="flex-1 md:flex-none data-manage-btn bg-slate-800 text-white cursor-pointer hover:bg-slate-900 justify-center">
-                        📥 匯入 CSV
+                    <button onclick="exportToCSV()" class="flex-1 md:flex-none px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded-xl text-xs font-bold hover:bg-slate-50">📤 匯出</button>
+                    <label class="flex-1 md:flex-none px-4 py-2 bg-slate-800 text-white rounded-xl text-xs font-bold cursor-pointer hover:bg-slate-900 text-center">
+                        📥 匯入
                         <input type="file" id="importFile" accept=".csv" class="hidden" onchange="importFromCSV(this)">
                     </label>
                 </div>
@@ -88,7 +107,7 @@
         </header>
 
         <main class="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
-            <!-- 新增/編輯區 (側邊欄) -->
+            <!-- 新增/編輯區 -->
             <section class="card p-5 md:p-6 h-fit lg:col-span-1 lg:sticky lg:top-6">
                 <div class="flex justify-between items-center mb-6">
                     <h2 id="formTitle" class="text-lg font-black text-slate-800">新增買方</h2>
@@ -96,65 +115,95 @@
                 </div>
                 <form id="mainForm" class="space-y-4">
                     <input type="hidden" id="editIndex" value="-1">
+                    
                     <div class="space-y-3">
-                        <input type="text" id="inputName" placeholder="姓名 (例: 林先生 /小姐)" class="w-full bg-slate-50 border-none rounded-xl p-3.5 text-sm font-bold focus:ring-2 focus:ring-blue-500" required>
+                        <input type="text" id="inputName" placeholder="姓名 (例: 林先生 /小姐)" class="form-input-std" required>
                         <div class="grid grid-cols-2 gap-2">
-                            <input type="text" id="inputCode" placeholder="簡碼 (例: A01)" class="w-full bg-slate-50 border-none rounded-xl p-3.5 text-sm font-bold">
-                            <select id="inputStatus" class="w-full bg-slate-50 border-none rounded-xl p-3.5 text-sm font-bold">
+                            <input type="text" id="inputCode" placeholder="簡碼 (例: A01)" class="form-input-std">
+                            <select id="inputStatus" class="form-input-std">
                                 <option value="經營中">🔄 經營中</option>
                                 <option value="A買">🌟 A買</option>
                                 <option value="失聯中">📵 失聯中</option>
                                 <option value="帶看過">👀 帶看過</option>
                                 <option value="LINE好友">💬 LINE好友</option>
-                                <option value="不經營">⏹️ 不經營</option>
+                                <option value="不經營">不經營</option>
                             </select>
                         </div>
-                        <input type="text" id="inputPhone" placeholder="電話" class="w-full bg-slate-50 border-none rounded-xl p-3.5 text-sm font-bold">
-                        <input type="text" id="inputLine" placeholder="LINE ID" class="w-full bg-slate-50 border-none rounded-xl p-3.5 text-sm font-bold">
-                        <input type="text" id="inputAddress" placeholder="通訊地址" class="w-full bg-slate-50 border-none rounded-xl p-3.5 text-sm font-bold">
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" id="inputPhone" placeholder="電話" class="form-input-std">
+                            <input type="text" id="inputLine" placeholder="LINE ID" class="form-input-std">
+                        </div>
+                        <input type="text" id="inputAddress" placeholder="通訊地址 (空白顯示未填)" class="form-input-std">
                     </div>
 
-                    <div class="p-4 bg-blue-50/50 rounded-2xl border border-blue-100 space-y-3">
+                    <div class="p-4 bg-blue-50/50 rounded-2xl border border-blue-100 space-y-4">
                         <p class="text-[10px] font-black text-blue-500 uppercase italic">📋 購屋需求詳情</p>
-                        <div class="grid grid-cols-2 gap-2">
-                            <select id="inputType" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm">
-                                <option value="電梯大樓">電梯大樓</option><option value="華廈">華廈</option><option value="公寓">公寓</option><option value="透天">透天</option><option value="別墅">別墅</option><option value="店面">店面</option>
-                            </select>
-                            <select id="inputParking" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm">
-                                <option value="車位不限">車位不限</option>
-                                <option value="坡道平面">坡道平面</option>
-                                <option value="坡道機械">坡道機械</option>
-                                <option value="昇降平面">昇降平面</option>
-                                <option value="昇降機械">昇降機械</option>
-                                <option value="塔式車位">塔式車位</option>
-                                <option value="不需要">不需要</option>
-                            </select>
-                            <input type="text" id="inputBudget" placeholder="預算(萬)" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm text-center">
-                            <input type="text" id="inputRoomRange" placeholder="房/衛 (3/2)" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm text-center">
-                            <input type="text" id="inputFloor" placeholder="樓層 1-5" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm text-center">
-                            <input type="text" id="inputSize" placeholder="坪數 25-45" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm text-center">
-                            <input type="text" id="inputAge" placeholder="屋齡 10-20" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm text-center">
-                        </div>
-                        <input type="text" id="inputArea" placeholder="區域需求 (空白分隔)" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm">
                         
-                        <!-- 備註與快速標籤 -->
+                        <div class="grid grid-cols-1 gap-3">
+                            <div class="flex flex-col gap-2 sm:flex-row">
+                                <select id="inputType" class="flex-1 bg-white border border-slate-200 rounded-xl p-3 text-[11px] font-bold shadow-sm outline-none">
+                                    <option value="">類型不限</option>
+                                    <option value="電梯大樓">電梯大樓</option><option value="華廈">華廈</option><option value="公寓">公寓</option><option value="透天">透天</option><option value="別墅">別墅</option><option value="店面">店面</option>
+                                </select>
+                                <select id="inputParking" class="flex-1 bg-white border border-slate-200 rounded-xl p-3 text-[11px] font-bold shadow-sm outline-none">
+                                    <option value="">車位不限</option>
+                                    <option value="坡道平面">坡道平面</option>
+                                    <option value="坡道機械">坡道機械</option>
+                                    <option value="昇降平面">昇降平面</option>
+                                    <option value="昇降機械">昇降機械</option>
+                                    <option value="不需要">不需要</option>
+                                </select>
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-2">
+                                <div class="flex flex-col">
+                                    <label class="text-[9px] text-slate-400 mb-1 ml-1 font-bold">預算(萬)</label>
+                                    <input type="text" id="inputBudget" placeholder="預算" class="w-full bg-white border border-slate-200 rounded-lg p-2.5 text-[11px] font-bold shadow-sm text-center">
+                                </div>
+                                <div class="flex flex-col">
+                                    <label class="text-[9px] text-slate-400 mb-1 ml-1 font-bold">房/衛</label>
+                                    <input type="text" id="inputRoomRange" placeholder="3/2" class="w-full bg-white border border-slate-200 rounded-lg p-2.5 text-[11px] font-bold shadow-sm text-center">
+                                </div>
+                                <div class="flex flex-col">
+                                    <label class="text-[9px] text-slate-400 mb-1 ml-1 font-bold">樓層</label>
+                                    <input type="text" id="inputFloor" placeholder="樓層" class="w-full bg-white border border-slate-200 rounded-lg p-2.5 text-[11px] font-bold shadow-sm text-center">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="flex flex-col">
+                                    <label class="text-[9px] text-slate-400 mb-1 ml-1 font-bold">坪數</label>
+                                    <input type="text" id="inputSize" placeholder="坪數" class="w-full bg-white border border-slate-200 rounded-lg p-2.5 text-[11px] font-bold shadow-sm text-center">
+                                </div>
+                                <div class="flex flex-col">
+                                    <label class="text-[9px] text-slate-400 mb-1 ml-1 font-bold">屋齡</label>
+                                    <input type="text" id="inputAge" placeholder="屋齡" class="w-full bg-white border border-slate-200 rounded-lg p-2.5 text-[11px] font-bold shadow-sm text-center">
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="space-y-2">
-                            <textarea id="inputNote" rows="2" placeholder="備註標籤 (空白分隔)" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm resize-none"></textarea>
-                            <div class="flex flex-wrap gap-1">
-                                <span class="note-quick-tag" onclick="insertQuickTag('非凶宅')">非凶宅</span>
-                                <span class="note-quick-tag" onclick="insertQuickTag('格局方正')">格局方正</span>
-                                <span class="note-quick-tag" onclick="insertQuickTag('邊間')">邊間</span>
-                                <span class="note-quick-tag" onclick="insertQuickTag('對外窗')">對外窗</span>
-                                <span class="note-quick-tag" onclick="insertQuickTag('天然瓦斯')">天然瓦斯</span>
-                                <span class="note-quick-tag" onclick="insertQuickTag('無暗房')">無暗房</span>
-                                <span class="note-quick-tag" onclick="insertQuickTag('無漏水壁癌')">無漏水壁癌</span>
+                            <input type="text" id="inputArea" placeholder="區域需求 (例: 板橋 府中)" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-[11px] font-bold shadow-sm">
+                            <input type="text" id="inputBuilding" placeholder="大樓/社區名稱 (空格標籤)" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-[11px] font-bold shadow-sm">
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <textarea id="inputNote" rows="2" placeholder="備註標籤描述" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-[11px] font-bold shadow-sm resize-none outline-none focus:border-blue-300"></textarea>
+                            <div class="flex flex-wrap gap-1.5 max-h-[120px] overflow-y-auto pr-1 custom-scroll">
                                 <span class="note-quick-tag" onclick="insertQuickTag('排除頂樓')">排除頂樓</span>
                                 <span class="note-quick-tag" onclick="insertQuickTag('排除夾層')">排除夾層</span>
+                                <span class="note-quick-tag" onclick="insertQuickTag('天然瓦斯')">天然瓦斯</span>
                                 <span class="note-quick-tag" onclick="insertQuickTag('一樓好停')">一樓好停</span>
+                                <span class="note-quick-tag" onclick="insertQuickTag('邊間')">邊間</span>
+                                <span class="note-quick-tag" onclick="insertQuickTag('對外窗')">對外窗</span>
                                 <span class="note-quick-tag" onclick="insertQuickTag('無障礙')">無障礙</span>
+                                <span class="note-quick-tag" onclick="insertQuickTag('格局方正')">格局方正</span>
+                                <span class="note-quick-tag" onclick="insertQuickTag('非凶宅')">非凶宅</span>
                                 <span class="note-quick-tag" onclick="insertQuickTag('頂樓加蓋')">頂樓加蓋</span>
                                 <span class="note-quick-tag" onclick="insertQuickTag('收租屋')">收租屋</span>
+                                <span class="note-quick-tag" onclick="insertQuickTag('無暗房')">無暗房</span>
                                 <span class="note-quick-tag" onclick="insertQuickTag('神明廳')">神明廳</span>
+                                <span class="note-quick-tag" onclick="insertQuickTag('無漏水壁癌')">無漏水壁癌</span>
                             </div>
                         </div>
                     </div>
@@ -165,103 +214,116 @@
             <!-- 列表區 -->
             <section class="lg:col-span-3 space-y-4">
                 <div class="card p-4 md:p-5 space-y-4">
-                    <div class="relative group">
-                        <span class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors">🔍</span>
-                        <input type="text" id="searchInput" oninput="render()" placeholder="搜尋姓名、電話、區域或筆記..." class="w-full pl-12 pr-6 py-3.5 rounded-xl border-none bg-slate-50 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+                        <div class="relative group md:col-span-8">
+                            <label class="block text-[10px] font-black text-slate-400 mb-1 pl-1 uppercase">🔍 搜尋 (姓名/電話/地址/大樓/日誌)</label>
+                            <div class="relative">
+                                <span class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400">🔎</span>
+                                <input type="text" id="searchInput" oninput="render()" placeholder="輸入關鍵字..." class="w-full pl-12 pr-6 py-3.5 rounded-xl border-none bg-slate-50 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                            </div>
+                        </div>
+                        <div class="md:col-span-4">
+                            <div class="flex items-center justify-between mb-1 pl-1">
+                                <label class="text-[10px] font-black text-slate-400 uppercase">📅 接洽日期搜尋</label>
+                                <button onclick="clearDateFilter()" class="text-[9px] font-bold text-blue-500 hover:underline">清除</button>
+                            </div>
+                            <input type="date" id="searchLogDate" onchange="render()" class="filter-date-search">
+                        </div>
                     </div>
-                    <!-- 篩選器 -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2 md:gap-3">
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 md:gap-3">
                         <div class="flex flex-col gap-1">
-                            <label class="text-[10px] font-black text-slate-400 pl-1 uppercase">狀態</label>
+                            <label class="text-[10px] font-black text-slate-400 pl-1">狀態</label>
                             <select id="filterStatus" onchange="render()" class="filter-select"><option value="全部">全部</option><option value="經營中">經營中</option><option value="A買">A買</option><option value="失聯中">失聯中</option><option value="帶看過">帶看過</option><option value="LINE好友">LINE好友</option><option value="不經營">不經營</option></select>
                         </div>
                         <div class="flex flex-col gap-1">
-                            <label class="text-[10px] font-black text-slate-400 pl-1 uppercase">類型</label>
-                            <select id="filterType" onchange="render()" class="filter-select"><option value="全部">全部</option><option value="電梯大樓">大樓</option><option value="華廈">華廈</option><option value="公寓">公寓</option><option value="透天">透天</option><option value="別墅">別墅</option><option value="店面">店面</option></select>
+                            <label class="text-[10px] font-black text-slate-400 pl-1">類型</label>
+                            <select id="filterType" onchange="render()" class="filter-select"><option value="全部">全部</option><option value="電梯大樓">電梯大樓</option><option value="華廈">華廈</option><option value="公寓">公寓</option><option value="透天">透天</option><option value="別墅">別墅</option><option value="店面">店面</option></select>
                         </div>
                         <div class="flex flex-col gap-1">
-                            <label class="text-[10px] font-black text-slate-400 pl-1 uppercase">預算</label>
-                            <select id="filterBudget" onchange="render()" class="filter-select"><option value="不限">不限</option><option value="1000↓">1000↓</option><option value="1000-2500">1K-2.5K</option><option value="2500-5000">2.5K-5K</option><option value="5000↑">5000↑</option></select>
+                            <label class="text-[10px] font-black text-slate-400 pl-1">預算</label>
+                            <select id="filterBudget" onchange="render()" class="filter-select"><option value="不限">不限</option><option value="1000↓">1000↓</option><option value="1000-2000">1K-2K</option><option value="2000-3500">2K-3.5K</option><option value="3500-5000">3.5K-5K</option><option value="5000↑">5000↑</option></select>
                         </div>
                         <div class="flex flex-col gap-1">
-                            <label class="text-[10px] font-black text-slate-400 pl-1 uppercase">房數</label>
+                            <label class="text-[10px] font-black text-slate-400 pl-1">房數</label>
                             <select id="filterRoom" onchange="render()" class="filter-select"><option value="不限">不限</option><option value="1">1房</option><option value="2">2房</option><option value="3">3房</option><option value="4">4房+</option></select>
                         </div>
                         <div class="flex flex-col gap-1">
-                            <label class="text-[10px] font-black text-slate-400 pl-1 uppercase">樓層</label>
-                            <select id="filterFloor" onchange="render()" class="filter-select"><option value="不限">不限</option><option value="1-5">1-5F</option><option value="6-12">6-12F</option><option value="13">13F+</option></select>
+                            <label class="text-[10px] font-black text-slate-400 pl-1">屋齡</label>
+                            <select id="filterAge" onchange="render()" class="filter-select"><option value="不限">不限</option><option value="5">5年內</option><option value="5-15">5-15年</option><option value="15-30">15-30年</option><option value="30">30年以上</option></select>
                         </div>
                         <div class="flex flex-col gap-1">
-                            <label class="text-[10px] font-black text-slate-400 pl-1 uppercase">屋齡</label>
-                            <select id="filterAge" onchange="render()" class="filter-select"><option value="不限">不限</option><option value="5">5年內</option><option value="5-15">5-15年</option><option value="15-30">15-30年</option><option value="30">30年+</option></select>
+                            <label class="text-[10px] font-black text-slate-400 pl-1">坪數</label>
+                            <select id="filterSize" onchange="render()" class="filter-select"><option value="不限">不限</option><option value="20↓">20↓</option><option value="20-40">20-40</option><option value="40-60">40-60</option><option value="60↑">60↑</option></select>
                         </div>
                         <div class="flex flex-col gap-1">
-                            <label class="text-[10px] font-black text-slate-400 pl-1 uppercase">坪數</label>
-                            <select id="filterSize" onchange="render()" class="filter-select"><option value="不限">不限</option><option value="25↓">25↓</option><option value="25-45">25-45</option><option value="45-65">45-65</option><option value="65↑">65↑</option></select>
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <label class="text-[10px] font-black text-slate-400 pl-1 uppercase">車位</label>
-                            <select id="filterParking" onchange="render()" class="filter-select"><option value="不限">不限</option><option value="坡道平面">平車</option><option value="坡道機械">坡機</option><option value="其他">其他</option></select>
+                            <label class="text-[10px] font-black text-slate-400 pl-1">車位</label>
+                            <select id="filterParking" onchange="render()" class="filter-select">
+                                <option value="不限">不限</option>
+                                <option value="坡道平面">坡道平面</option>
+                                <option value="坡道機械">坡道機械</option>
+                                <option value="昇降平面">昇降平面</option>
+                                <option value="昇降機械">昇降機械</option>
+                                <option value="不需要">不需要</option>
+                            </select>
                         </div>
                     </div>
                 </div>
 
-                <div id="dataList" class="space-y-4"></div>
+                <div id="dataList" class="grid grid-cols-1 gap-4"></div>
             </section>
         </main>
     </div>
 
-    <!-- 彈窗 (日誌與筆記) -->
+    <!-- 編輯彈窗 -->
     <div id="logModal" class="fixed inset-0 z-[60] hidden modal-bg flex items-center justify-center p-2 md:p-4">
         <div class="card w-full max-w-5xl bg-white p-4 md:p-6 h-[95vh] flex flex-col shadow-2xl overflow-hidden">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl md:text-2xl font-black text-slate-800" id="logModalTitle">經營與日誌</h3>
+                <h3 class="text-xl md:text-2xl font-black text-slate-800" id="logModalTitle">經營詳情</h3>
                 <button onclick="closeLogModal()" class="text-3xl text-slate-400 hover:text-red-500 px-2">&times;</button>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-10 gap-4 mb-4">
-                <!-- 經營筆記 -->
-                <div class="flex flex-col h-[220px] bg-amber-50/50 p-3 rounded-2xl border border-amber-100 md:col-span-5">
-                    <div class="flex items-center justify-between mb-2">
-                        <label class="text-[10px] font-black text-amber-600 uppercase flex items-center gap-1">⭐ 特質與筆記</label>
-                        <button onclick="updateAdminNoteInModal()" class="px-2 py-1 bg-amber-500 text-white rounded-lg text-[9px] font-black shadow-sm">儲存筆記</button>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div class="flex flex-col h-[320px] bg-amber-50/50 p-4 rounded-2xl border border-amber-100">
+                    <div class="flex items-center justify-between mb-3">
+                        <label class="text-[11px] font-black text-amber-600">⭐ 客戶特質與長期筆記</label>
+                        <button onclick="updateAdminNoteInModal()" class="px-3 py-1.5 bg-amber-500 text-white rounded-lg text-[10px] font-black hover:bg-amber-600">儲存特質</button>
                     </div>
-                    <textarea id="modalAdminNote" class="w-full flex-1 bg-white border border-amber-200 rounded-xl p-2 text-xs font-bold outline-none resize-none custom-scroll" placeholder="記錄個性偏好、特殊忌諱..."></textarea>
-                    <div class="flex flex-wrap gap-1 mt-2">
-                        <button onclick="insertQuick('modalAdminNote', '📞 晚點再打')" class="quick-insert-btn">晚點再打</button>
-                        <button onclick="insertQuick('modalAdminNote', '📅 隔日再打')" class="quick-insert-btn">隔日再打</button>
-                        <button onclick="insertQuick('modalAdminNote', '🌱 持續經營')" class="quick-insert-btn green">持續經營</button>
-                        <button onclick="insertQuick('modalAdminNote', '🔍 需求探索')" class="quick-insert-btn blue">需求探索</button>
-                        <button onclick="insertQuick('modalAdminNote', '⏹️ 不買了')" class="quick-insert-btn red">不買了</button>
-                        <button onclick="insertQuick('modalAdminNote', '🔇 沒需求')" class="quick-insert-btn">沒需求</button>
+                    <textarea id="modalAdminNote" class="w-full flex-1 bg-white border border-amber-200 rounded-xl p-3 text-sm font-bold outline-none resize-none custom-scroll leading-relaxed" placeholder="記錄客戶偏好、家庭成員..."></textarea>
+                    <div class="flex flex-wrap gap-1.5 mt-3">
+                        <button onclick="insertQuick('modalAdminNote', '📞 晚點再打')" class="quick-insert-btn">📞 晚點打</button>
+                        <button onclick="insertQuick('modalAdminNote', '📅 隔日再打')" class="quick-insert-btn">📅 隔日打</button>
+                        <button onclick="insertQuick('modalAdminNote', '🌱 持續經營')" class="quick-insert-btn">🌱 持續經營</button>
+                        <button onclick="insertQuick('modalAdminNote', '🔍 需求探索')" class="quick-insert-btn">🔍 需求探索</button>
+                        <button onclick="insertQuick('modalAdminNote', '🙅 不買了')" class="quick-insert-btn">🙅 不買了</button>
+                        <button onclick="insertQuick('modalAdminNote', '🔇 沒需求')" class="quick-insert-btn">🔇 沒需求</button>
                     </div>
                 </div>
-                <!-- 接洽內容 -->
-                <div class="flex flex-col h-[220px] bg-emerald-50/50 p-3 rounded-2xl border border-emerald-100 md:col-span-5">
-                    <div class="flex items-center justify-between mb-2">
+                <div class="flex flex-col h-[320px] bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100">
+                    <div class="flex items-center justify-between mb-3">
                         <div class="flex items-center gap-2">
-                            <label class="text-[10px] font-black text-emerald-600 uppercase" id="logFormTitle">✍️ 新增接洽紀錄</label>
-                            <input type="date" id="logDate" class="text-[9px] font-bold bg-white border-emerald-200 rounded-lg px-2 py-1 outline-none">
+                            <label class="text-[11px] font-black text-emerald-600" id="logFormTitle">✍️ 當次接洽紀錄</label>
+                            <input type="date" id="logDate" class="text-[10px] font-bold bg-white border border-emerald-200 rounded-lg px-2.5 py-1.5 outline-none">
                         </div>
-                        <button onclick="saveNewLog()" id="btnSaveLog" class="px-3 py-1 bg-emerald-600 text-white rounded-lg text-[10px] font-black shadow-sm">儲存日誌</button>
+                        <button onclick="saveNewLog()" id="btnSaveLog" class="px-4 py-1.5 bg-emerald-600 text-white rounded-lg text-[11px] font-black hover:bg-emerald-700 shadow-sm">儲存日誌</button>
                     </div>
-                    <textarea id="newLogContent" class="w-full flex-1 bg-white border border-emerald-200 rounded-xl p-2 text-xs font-bold outline-none resize-none custom-scroll" placeholder="談話內容、看屋反饋..."></textarea>
+                    <textarea id="newLogContent" class="w-full flex-1 bg-white border border-emerald-200 rounded-xl p-3 text-sm font-bold outline-none resize-none custom-scroll leading-relaxed" placeholder="輸入今日對話內容摘要..."></textarea>
                     <input type="hidden" id="editingLogId" value="">
-                    <div class="flex flex-wrap gap-1 mt-2">
-                        <button onclick="insertQuick('newLogContent', '📞 未接電話')" class="quick-insert-btn">未接電話</button>
-                        <button onclick="insertQuick('newLogContent', '📵 直掛電話')" class="quick-insert-btn">直掛電話</button>
-                        <button onclick="insertQuick('newLogContent', '📠 語音信箱')" class="quick-insert-btn">語音信箱</button>
-                        <button onclick="insertQuick('newLogContent', '📵 電話超聯')" class="quick-insert-btn red">電話超聯</button>
-                        <button onclick="insertQuick('newLogContent', '🏠 預約帶看')" class="quick-insert-btn blue">預約帶看</button>
-                        <button onclick="insertQuick('newLogContent', '🎉 買到了')" class="quick-insert-btn amber">買到了</button>
-                        <button onclick="insertQuick('newLogContent', '⏹️ 沒需求')" class="quick-insert-btn">沒需求</button>
+                    <div class="flex flex-wrap gap-1.5 mt-3">
+                        <button onclick="insertQuick('newLogContent', '📵 未接電話')" class="quick-insert-btn">📵 未接</button>
+                        <button onclick="insertQuick('newLogContent', '📴 直掛電話')" class="quick-insert-btn">📴 直掛</button>
+                        <button onclick="insertQuick('newLogContent', '🗣️ 語音信箱')" class="quick-insert-btn">🗣️ 語音</button>
+                        <button onclick="insertQuick('newLogContent', '☎️ 電話超聯')" class="quick-insert-btn">☎️ 超聯</button>
+                        <button onclick="insertQuick('newLogContent', '🏠 預約帶看')" class="quick-insert-btn">🏠 帶看</button>
+                        <button onclick="insertQuick('newLogContent', '🎉 買到了')" class="quick-insert-btn">🎉 買到</button>
+                        <button onclick="insertQuick('newLogContent', '🔇 沒需求')" class="quick-insert-btn">🔇 沒需求</button>
                     </div>
                 </div>
             </div>
             
-            <div class="flex-1 overflow-hidden flex flex-col bg-slate-50 p-4 rounded-3xl border border-slate-200 max-w-4xl mx-auto w-full">
-                <label class="text-[10px] font-black text-slate-400 mb-2 uppercase tracking-widest italic">📋 歷史接洽清單 (點擊紀錄可編輯)</label>
-                <div class="flex-1 overflow-y-auto custom-scroll space-y-2 pr-1" id="logHistoryList"></div>
+            <div class="flex-1 overflow-hidden flex flex-col bg-slate-50 p-4 rounded-3xl border border-slate-200 w-full md:max-w-4xl mx-auto shadow-inner">
+                <label class="text-[10px] font-black text-slate-400 mb-3 uppercase italic tracking-widest pl-2">📋 歷史經營軌跡</label>
+                <div class="flex-1 overflow-y-auto custom-scroll space-y-3 pr-2" id="logHistoryList"></div>
             </div>
         </div>
     </div>
@@ -269,8 +331,7 @@
     <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-8 py-3 rounded-2xl hidden z-[100] text-xs font-black shadow-2xl"></div>
 
     <script>
-        // 版本控制
-        const STORAGE_KEY = 'crm_buyers_v3_6';
+        const STORAGE_KEY = 'crm_pro_v4_6_data';
         let buyers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
         let currentClientIndex = -1;
 
@@ -284,89 +345,26 @@
             '不經營': 'bg-slate-800 text-white'
         };
 
-        // --- 資料管理功能 ---
+        function d(v, placeholder = '不限') { 
+            return (v && v.trim() !== '') ? v : `<span class="text-empty">${placeholder}</span>`; 
+        }
 
-        function exportToCSV() {
-            if (buyers.length === 0) {
-                showToast('⚠️ 目前沒有客戶資料可供匯出');
-                return;
+        function formatRoom(val) {
+            if (!val || val.trim() === '') return `<span class="text-empty">0房0衛</span>`;
+            if (val.includes('/')) {
+                const p = val.split('/');
+                const r = p[0] || 0;
+                const w = p[1] || 0;
+                return `${r}房${w}衛`;
             }
-            const headers = ['姓名', '簡碼', '電話', 'LINE_ID', '地址', '狀態', '預算', '房屋類型', '車位', '房衛需求', '樓層', '坪數', '屋齡', '需求區域', '備註標籤', '特質筆記', '接洽紀錄', '建立日期'];
-            const rows = buyers.map(b => {
-                const logStr = (b.logs || []).map(l => `[${l.timestamp}] ${l.content}`).join(' | ');
-                return [b.name, b.code, b.phone, b.line, b.address, b.status, b.budget, b.type, b.parking, b.roomRange, b.floor, b.size, b.age, b.area, b.note, b.adminNote, logStr, b.createdAt].map(val => `"${(val || '').toString().replace(/"/g, '""')}"`).join(',');
-            });
-            const csvContent = "\ufeff" + headers.join(',') + "\n" + rows.join('\n');
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = `CRM_Export_${new Date().toISOString().split('T')[0]}.csv`;
-            link.click();
-            showToast('✅ 匯出完成');
+            return `${val}房`;
         }
 
-        function importFromCSV(input) {
-            const file = input.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const text = e.target.result;
-                const lines = text.split(/\r?\n/);
-                if (lines.length < 2) return;
-                const importedData = [];
-                for (let i = 1; i < lines.length; i++) {
-                    if (!lines[i].trim()) continue;
-                    const values = []; let current = ''; let inQuotes = false;
-                    for (let char of lines[i]) {
-                        if (char === '"' && !inQuotes) inQuotes = true;
-                        else if (char === '"' && inQuotes) inQuotes = false;
-                        else if (char === ',' && !inQuotes) { values.push(current); current = ''; }
-                        else current += char;
-                    }
-                    values.push(current);
-                    const getVal = (idx) => (values[idx] || '').replace(/^"|"$/g, '').trim();
-                    const b = {
-                        name: getVal(0), code: getVal(1), phone: getVal(2), line: getVal(3), address: getVal(4), status: getVal(5) || '經營中',
-                        budget: getVal(6), type: getVal(7), parking: getVal(8), roomRange: getVal(9), floor: getVal(10), size: getVal(11),
-                        age: getVal(12), area: getVal(13), note: getVal(14), adminNote: getVal(15), createdAt: getVal(17) || new Date().toLocaleDateString()
-                    };
-                    const logRaw = getVal(16);
-                    b.logs = logRaw ? logRaw.split(' | ').map(entry => {
-                        const match = entry.match(/^\[(.*?)\] (.*)$/);
-                        return match ? { id: Date.now() + Math.random(), timestamp: match[1], content: match[2] } : null;
-                    }).filter(v => v) : [];
-                    if (b.name) importedData.push(b);
-                }
-                if (importedData.length > 0) {
-                    if (confirm(`匯入 ${importedData.length} 位客戶，是否覆蓋現有資料？`)) buyers = importedData;
-                    else buyers = [...buyers, ...importedData];
-                    save(); render(); showToast(`✅ 匯入完成`);
-                }
-                input.value = '';
-            };
-            reader.readAsText(file);
-        }
-
-        // --- 核心邏輯 ---
-
-        function parseRange(str) {
-            if (!str) return null;
-            const parts = str.toString().split(/[-~ ]+/).map(p => parseFloat(p)).filter(p => !isNaN(p));
-            if (parts.length === 0) return null;
-            if (parts.length === 1) return { min: parts[0], max: parts[0] };
-            return { min: Math.min(...parts), max: Math.max(...parts) };
-        }
-
-        function checkOverlap(valStr, minBound, maxBound) {
-            const range = parseRange(valStr);
-            if (!range) return false;
-            const checkMin = minBound === null ? -Infinity : minBound;
-            const checkMax = maxBound === null ? Infinity : maxBound;
-            return range.min <= checkMax && range.max >= checkMin;
-        }
-
+        function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(buyers)); }
+        function showToast(m) { const t = document.getElementById('toast'); t.innerHTML = m; t.classList.remove('hidden'); setTimeout(() => t.classList.add('hidden'), 2000); }
+        
         function copy(text, label) {
-            if (!text) return;
+            if (!text || text.trim() === '') return;
             const temp = document.createElement('textarea');
             temp.value = text;
             document.body.appendChild(temp);
@@ -376,157 +374,183 @@
             showToast(`📋 已複製 ${label}`);
         }
 
-        function openMap(query) {
-            if (!query) return;
-            window.open(`https://www.google.com/maps/search/${encodeURIComponent(query)}`, '_blank');
-        }
-
-        function formatRoom(val) {
-            if (!val) return '0房0衛';
-            let parts = val.toString().split(/[/／]/);
-            return `${parts[0] || '0'}房${parts[1] || '0'}衛`;
-        }
-
-        function getGenderClass(name) {
-            if (name.includes('小姐')) return 'border-female';
-            if (name.includes('先生')) return 'border-male';
-            return 'border-other';
-        }
-
-        function d(v) { return (v && v.trim() !== '') ? v : '<span class="text-empty">(未填)</span>'; }
-
-        function updateQuickStatus(idx, newStatus) {
-            buyers[idx].status = newStatus;
-            save(); render();
-            showToast(`📍 狀態變更：${newStatus}`);
-        }
-
         function insertQuick(id, text) {
             const area = document.getElementById(id);
             const start = area.selectionStart;
-            const end = area.selectionEnd;
-            const val = area.value;
-            const space = (val.length > 0 && val[start-1] !== ' ' && val[start-1] !== '\n') ? ' ' : '';
-            area.value = val.substring(0, start) + space + text + val.substring(end);
+            const space = (area.value.length > 0 && area.value[start-1] !== ' ') ? ' ' : '';
+            area.value = area.value.substring(0, start) + space + text + area.value.substring(area.selectionEnd);
             area.focus();
-            const newPos = start + space.length + text.length;
-            area.setSelectionRange(newPos, newPos);
         }
 
-        // 新增備註快速標籤邏輯
         function insertQuickTag(tag) {
             const area = document.getElementById('inputNote');
             let val = area.value.trim();
-            if (val.includes(tag)) return; // 避免重複
+            if (val.includes(tag)) return;
             area.value = val + (val === '' ? '' : ' ') + tag;
             area.focus();
+        }
+
+        function clearDateFilter() { document.getElementById('searchLogDate').value = ''; render(); }
+
+        function checkOverlap(valStr, minBound, maxBound) {
+            if (!valStr) return false;
+            const parts = valStr.toString().split(/[-~ /]+/).map(p => parseFloat(p)).filter(p => !isNaN(p));
+            if (parts.length === 0) return false;
+            const min = Math.min(...parts);
+            const max = Math.max(...parts);
+            const checkMin = minBound === null ? -Infinity : minBound;
+            const checkMax = maxBound === null ? Infinity : maxBound;
+            return min <= checkMax && max >= checkMin;
         }
 
         function render() {
             const container = document.getElementById('dataList');
             const kw = document.getElementById('searchInput').value.toLowerCase();
+            const logDateSearch = document.getElementById('searchLogDate').value;
+            
             const fStatus = document.getElementById('filterStatus').value;
             const fType = document.getElementById('filterType').value;
             const fBudget = document.getElementById('filterBudget').value;
             const fRoom = document.getElementById('filterRoom').value;
-            const fFloor = document.getElementById('filterFloor').value;
             const fAge = document.getElementById('filterAge').value;
             const fSize = document.getElementById('filterSize').value;
             const fParking = document.getElementById('filterParking').value;
 
             const filtered = buyers.filter(b => {
-                const logMatch = b.logs?.some(l => l.content.toLowerCase().includes(kw));
-                const adminMatch = b.adminNote?.toLowerCase().includes(kw);
-                const textMatch = `${b.name}${b.phone}${b.area}${b.note}${b.address}${b.line}`.toLowerCase().includes(kw);
-                if (!textMatch && !logMatch && !adminMatch) return false;
+                // 1. 日期搜尋
+                if (logDateSearch) {
+                    const hasLog = b.logs && b.logs.some(l => l.timestamp === logDateSearch);
+                    if (!hasLog) return false;
+                }
+
+                // 2. 關鍵字搜尋
+                const match = `${b.name}${b.phone}${b.area}${b.building}${b.note}${b.code}${b.address}`.toLowerCase().includes(kw) ||
+                              (b.logs?.some(l => l.content.toLowerCase().includes(kw))) ||
+                              (b.adminNote?.toLowerCase().includes(kw));
+                if (!match) return false;
+
+                // 3. 狀態篩選
                 if (fStatus !== '全部' && b.status !== fStatus) return false;
-                if (fType !== '全部' && b.type !== fType) return false;
+
+                // 4. 類型篩選 (關鍵修正: 若買方類型為空，表示「類型不限」，則應匹配任何篩選)
+                if (fType !== '全部') {
+                    if (b.type !== '' && b.type !== fType) return false;
+                }
+
+                // 5. 預算篩選
                 if (fBudget !== '不限') {
                     if (fBudget === '1000↓' && !checkOverlap(b.budget, 0, 1000)) return false;
-                    if (fBudget === '1000-2500' && !checkOverlap(b.budget, 1000, 2500)) return false;
-                    if (fBudget === '2500-5000' && !checkOverlap(b.budget, 2500, 5000)) return false;
+                    if (fBudget === '1000-2000' && !checkOverlap(b.budget, 1000, 2000)) return false;
+                    if (fBudget === '2000-3500' && !checkOverlap(b.budget, 2000, 3500)) return false;
+                    if (fBudget === '3500-5000' && !checkOverlap(b.budget, 3500, 5000)) return false;
                     if (fBudget === '5000↑' && !checkOverlap(b.budget, 5000, 99999)) return false;
                 }
+
+                // 6. 房數篩選
                 if (fRoom !== '不限') {
-                    const rooms = parseInt(b.roomRange?.toString().split(/[/／]/)[0]) || 0;
-                    if (fRoom === '4' && rooms < 4) return false;
-                    if (fRoom !== '4' && rooms != parseInt(fRoom)) return false;
+                    const r = parseInt(b.roomRange) || 0;
+                    if (fRoom === '4' && r < 4) return false;
+                    if (fRoom !== '4' && r != parseInt(fRoom)) return false;
                 }
-                if (fFloor !== '不限') {
-                    if (fFloor === '1-5' && !checkOverlap(b.floor, 1, 5)) return false;
-                    if (fFloor === '6-12' && !checkOverlap(b.floor, 6, 12)) return false;
-                    if (fFloor === '13' && !checkOverlap(b.floor, 13, 999)) return false;
-                }
+
+                // 7. 屋齡篩選
                 if (fAge !== '不限') {
                     if (fAge === '5' && !checkOverlap(b.age, 0, 5)) return false;
                     if (fAge === '5-15' && !checkOverlap(b.age, 5, 15)) return false;
                     if (fAge === '15-30' && !checkOverlap(b.age, 15, 30)) return false;
                     if (fAge === '30' && !checkOverlap(b.age, 30, 999)) return false;
                 }
+
+                // 8. 坪數篩選
                 if (fSize !== '不限') {
-                    if (fSize === '25↓' && !checkOverlap(b.size, 0, 25)) return false;
-                    if (fSize === '25-45' && !checkOverlap(b.size, 25, 45)) return false;
-                    if (fSize === '45-65' && !checkOverlap(b.size, 45, 65)) return false;
-                    if (fSize === '65↑' && !checkOverlap(b.size, 65, 9999)) return false;
+                    if (fSize === '20↓' && !checkOverlap(b.size, 0, 20)) return false;
+                    if (fSize === '20-40' && !checkOverlap(b.size, 20, 40)) return false;
+                    if (fSize === '40-60' && !checkOverlap(b.size, 40, 60)) return false;
+                    if (fSize === '60↑' && !checkOverlap(b.size, 60, 9999)) return false;
                 }
-                if (fParking !== '不限' && fParking !== '其他') {
-                    if (b.parking !== fParking) return false;
-                } else if (fParking === '其他') {
-                    if (['坡道平面', '坡道機械'].includes(b.parking)) return false;
+
+                // 9. 車位篩選 (關鍵修正: 若買方車位為空，表示「車位不限」，則應匹配任何篩選)
+                if (fParking !== '不限') {
+                    if (b.parking !== '' && b.parking !== fParking) return false;
                 }
+
                 return true;
             });
 
             container.innerHTML = filtered.map(b => {
                 const idx = buyers.indexOf(b);
-                const genderClass = getGenderClass(b.name);
+                const genderClass = b.name.includes('小姐') ? 'border-female' : (b.name.includes('先生') ? 'border-male' : 'border-other');
                 const areaTags = b.area ? b.area.split(/\s+/).filter(t => t) : [];
+                const buildingTags = b.building ? b.building.split(/\s+/).filter(t => t) : [];
                 const noteTags = b.note ? b.note.split(/\s+/).filter(t => t) : [];
                 const latestLog = b.logs && b.logs.length > 0 ? b.logs[0] : null;
 
+                const displayType = d(b.type, '類型不限');
+                const displayRoom = formatRoom(b.roomRange);
+                const displaySize = b.size && b.size.trim() !== '' ? `${b.size}坪` : `<span class="text-empty">不限</span>`;
+                const displayFloor = b.floor && b.floor.trim() !== '' ? `${b.floor}樓` : `<span class="text-empty">不限</span>`;
+                const displayParking = d(b.parking, '車位不限');
+                const displayAge = b.age && b.age.trim() !== '' ? `${b.age}年` : `<span class="text-empty">不限</span>`;
+                const displayBudget = b.budget && b.budget.trim() !== '' ? `${b.budget}萬` : `<span class="text-empty">0萬</span>`;
+
                 return `
-                    <div class="card p-5 md:p-6 ${genderClass} relative overflow-hidden transition-all duration-300">
+                    <div class="card p-5 md:p-6 ${genderClass} relative overflow-hidden card-hover">
                         <div class="absolute top-5 right-5 flex items-center">
-                            <span class="bg-blue-600 text-white text-[10px] md:text-xs font-black px-3 py-1.5 rounded-full shadow-lg">💰 ${b.budget || '0'}萬</span>
+                            <span class="budget-badge">💰 ${displayBudget}</span>
                         </div>
-                        <div class="flex flex-wrap items-center gap-x-4 gap-y-3 mb-4 pr-16 md:pr-24">
+                        
+                        <div class="flex flex-wrap items-center gap-x-4 gap-y-3 mb-4 pr-32">
                             <div class="flex items-center gap-2">
-                                <span onclick="copy('${b.code}', '簡碼')" class="bg-slate-800 text-white text-[9px] px-2 py-0.5 rounded-full font-black cursor-pointer hover:bg-blue-600 shrink-0">${b.code || 'NO'}</span>
-                                <h3 onclick="copy('${b.name}', '姓名')" class="text-lg md:text-xl font-black text-slate-900 shrink-0 cursor-pointer hover:text-blue-600 transition-colors">${b.name}</h3>
+                                <span onclick="copy('${b.code}', '簡碼')" class="bg-slate-800 text-white text-[9px] px-2 py-0.5 rounded-full font-black cursor-copy hover:bg-blue-600">${b.code || '無代碼'}</span>
+                                <h3 onclick="copy('${b.name}', '姓名')" class="text-lg md:text-xl font-black text-slate-900 clickable-name">${b.name}</h3>
                             </div>
-                            <div class="relative shrink-0">
-                                <select onchange="updateQuickStatus(${idx}, this.value)" class="status-select ${statusColors[b.status]}">
-                                    ${statusOptions.map(opt => `<option value="${opt}" ${b.status === opt ? 'selected' : ''}>${opt}</option>`).join('')}
-                                </select>
-                            </div>
-                            <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs font-bold text-slate-500 w-full md:w-auto mt-1 md:mt-0">
-                                <span onclick="copy('${b.phone}', '電話')" class="copy-hint flex items-center gap-1 hover:text-blue-500"><span class="text-blue-500">📞</span> ${d(b.phone)}</span>
-                                <span onclick="copy('${b.line}', 'LINE')" class="copy-hint flex items-center gap-1 hover:text-green-500"><span class="text-green-500">💬</span> ${d(b.line)}</span>
-                                <span onclick="openMap('${b.address}')" class="copy-hint flex items-center gap-1 hover:text-red-500 max-w-full overflow-hidden text-ellipsis"><span class="text-red-500">📍</span> ${d(b.address)}</span>
+                            <select onchange="updateQuickStatus(${idx}, this.value)" class="status-select ${statusColors[b.status]}">
+                                ${statusOptions.map(opt => `<option value="${opt}" ${b.status === opt ? 'selected' : ''}>${opt}</option>`).join('')}
+                            </select>
+                            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-bold text-slate-500 w-full md:w-auto">
+                                <span onclick="copy('${b.phone}', '電話')" class="copy-hint hover:text-blue-500">📞 ${d(b.phone, '未填')}</span>
+                                <span onclick="copy('${b.line}', 'LINE')" class="copy-hint line-text">💬 <span class="text-slate-500 mr-1">LINE:</span>${d(b.line, '未填')}</span>
+                                ${b.address && b.address.trim() !== '' ? `<a href="https://www.google.com/maps/search/${encodeURIComponent(b.address)}" target="_blank" class="flex items-center gap-1 text-blue-600 hover:underline">📍 <span class="text-slate-500 mr-1">地址:</span>${b.address}</a>` : `<span>📍 <span class="text-slate-500 mr-1">地址:</span>${d(b.address, '未填')}</span>`}
                             </div>
                         </div>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="info-pill">🏠 ${b.type || '房屋'}</span><span class="info-pill">🛏️ ${formatRoom(b.roomRange)}</span><span class="info-pill">📏 ${b.size || '0'}坪</span><span class="info-pill">🏢 ${b.floor || '0'}樓</span><span class="info-pill">🚗 ${b.parking || '車位'}</span><span class="info-pill">⌛ ${b.age || '0'}年</span>
+
+                        <div class="flex flex-wrap gap-2.5 mb-4">
+                            <span class="info-pill">🏠 ${displayType}</span>
+                            <span class="info-pill">🛏️ ${displayRoom}</span>
+                            <span class="info-pill">📏 ${displaySize}</span>
+                            <span class="info-pill">🏢 ${displayFloor}</span>
+                            <span class="info-pill">🚗 ${displayParking}</span>
+                            <span class="info-pill">🕰️ ${displayAge}</span>
                         </div>
+
                         <div class="flex flex-wrap items-center gap-1.5 mb-4">
-                            ${areaTags.map(t => `<span onclick="openMap('${t}')" class="area-tag">🗺️ ${t}</span>`).join('')}
+                            ${areaTags.map(t => `<a href="https://www.google.com/maps/search/${encodeURIComponent(t)}" target="_blank" class="area-tag">🗺️ ${t}</a>`).join('')}
+                            ${buildingTags.map(t => `<a href="https://www.google.com/maps/search/${encodeURIComponent(t)}" target="_blank" class="building-tag">🏢 ${t}</a>`).join('')}
                             ${noteTags.map(t => `<span class="note-tag"># ${t}</span>`).join('')}
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-5">
-                            ${b.adminNote ? `<div onclick="openLogModal(${idx})" class="bg-amber-50/50 p-2.5 rounded-xl border border-amber-200 text-[10px] md:text-[11px] font-bold text-slate-600 italic line-clamp-2 cursor-pointer">⭐ 筆記: ${b.adminNote}</div>` : ''}
-                            ${latestLog ? `<div onclick="openLogModal(${idx})" class="bg-emerald-50/50 p-2.5 rounded-xl border border-emerald-100 text-[10px] md:text-[11px] font-bold text-slate-600 line-clamp-2 cursor-pointer">📅 ${latestLog.timestamp}: ${latestLog.content}</div>` : ''}
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
+                            <div onclick="openLogModal(${idx})" class="bg-amber-50/50 p-3 rounded-xl border border-amber-200 text-[11px] font-bold text-slate-600 italic cursor-pointer hover:bg-amber-100/50 transition-colors">
+                                <div class="text-[9px] text-amber-500 mb-1 uppercase font-black tracking-widest">⭐ 客戶特質筆記</div>
+                                <div class="line-clamp-2">${b.adminNote && b.adminNote.trim() !== '' ? b.adminNote : '尚未填寫筆記...'}</div>
+                            </div>
+                            <div onclick="openLogModal(${idx})" class="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100 text-[11px] font-bold text-slate-600 cursor-pointer hover:bg-emerald-100/50 transition-colors">
+                                <div class="text-[9px] text-emerald-500 mb-1 uppercase font-black tracking-widest">📅 最新接洽摘要</div>
+                                <div class="line-clamp-2">${latestLog ? `${latestLog.timestamp}: ${latestLog.content}` : '尚無接洽紀錄...'}</div>
+                            </div>
                         </div>
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-4 border-t border-slate-50">
-                            <span class="text-[8px] md:text-[9px] font-bold text-slate-300 uppercase tracking-widest italic order-2 sm:order-1">SINCE: ${b.createdAt || '-'}</span>
-                            <div class="flex flex-wrap gap-2 w-full sm:w-auto order-1 sm:order-2">
-                                <button onclick="editItem(${idx})" class="flex-1 sm:flex-none px-4 py-2.5 bg-blue-50 text-blue-700 rounded-xl text-xs font-black hover:bg-blue-100 border border-blue-100">編輯需求</button>
-                                <button onclick="openLogModal(${idx})" class="flex-1 sm:flex-none px-4 py-2.5 bg-blue-600 text-white rounded-xl text-xs font-black shadow-md hover:bg-blue-700">對話紀錄</button>
-                                <button onclick="deleteBuyer(${idx})" class="px-3 py-2.5 bg-slate-50 text-slate-400 rounded-xl text-xs font-bold hover:bg-red-50 hover:text-red-400">刪除</button>
+
+                        <div class="flex justify-between items-center pt-4 border-t border-slate-50">
+                            <span class="text-[9px] font-bold text-slate-300 uppercase italic">建檔: ${b.createdAt || '-'}</span>
+                            <div class="flex gap-2">
+                                <button onclick="editItem(${idx})" class="px-4 py-2 bg-slate-100 text-slate-600 rounded-xl text-xs font-black hover:bg-slate-200">編輯需求</button>
+                                <button onclick="openLogModal(${idx})" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-black shadow-md hover:bg-blue-700">經營對話</button>
+                                <button onclick="deleteBuyer(${idx})" class="px-3 py-2 text-slate-400 rounded-xl text-xs font-bold hover:text-red-500">刪除</button>
                             </div>
                         </div>
                     </div>
                 `;
-            }).join('') || '<div class="card p-12 text-center text-slate-400 font-bold italic">找不到符合條件的客戶</div>';
+            }).join('') || '<div class="card p-12 text-center text-slate-400 font-bold italic">目前沒有任何買方資料</div>';
         }
 
         document.getElementById('mainForm').onsubmit = function(e) {
@@ -547,78 +571,15 @@
                 size: document.getElementById('inputSize').value,
                 age: document.getElementById('inputAge').value,
                 area: document.getElementById('inputArea').value,
+                building: document.getElementById('inputBuilding').value,
                 note: document.getElementById('inputNote').value,
                 createdAt: idx === -1 ? new Date().toLocaleDateString() : buyers[idx].createdAt,
                 adminNote: idx === -1 ? '' : (buyers[idx].adminNote || ''),
                 logs: idx === -1 ? [] : (buyers[idx].logs || [])
             };
             if (idx === -1) buyers.unshift(data); else buyers[idx] = data;
-            save(); resetForm(); render(); showToast('✅ 儲存成功');
+            save(); resetForm(); render(); showToast('✅ 客戶資料已儲存');
         };
-
-        function deleteBuyer(idx) { if(confirm('確定要永久刪除此客戶嗎？')) { buyers.splice(idx, 1); save(); render(); } }
-
-        function openLogModal(idx) {
-            currentClientIndex = idx; const b = buyers[idx];
-            document.getElementById('logModalTitle').innerText = `${b.name} - 經營詳情`;
-            document.getElementById('modalAdminNote').value = b.adminNote || '';
-            document.getElementById('logModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden'; 
-            resetLogForm(); renderLogs();
-        }
-
-        function closeLogModal() { document.getElementById('logModal').classList.add('hidden'); document.body.style.overflow = 'auto'; }
-        
-        function saveNewLog() {
-            const content = document.getElementById('newLogContent').value.trim();
-            const logDateVal = document.getElementById('logDate').value;
-            const logId = document.getElementById('editingLogId').value;
-            if(!content) return;
-            const logs = buyers[currentClientIndex].logs || [];
-            if (logId) {
-                const idx = logs.findIndex(l => l.id == logId);
-                if (idx !== -1) { logs[idx].content = content; logs[idx].timestamp = logDateVal; }
-            } else {
-                logs.unshift({ id: Date.now() + Math.random(), timestamp: logDateVal, content });
-            }
-            logs.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
-            buyers[currentClientIndex].logs = logs;
-            save(); renderLogs(); resetLogForm(); render(); showToast('✅ 日誌已儲存');
-        }
-
-        function renderLogs() {
-            const list = document.getElementById('logHistoryList');
-            const logs = buyers[currentClientIndex].logs || [];
-            list.innerHTML = logs.map(l => `
-                <div class="p-3 bg-white rounded-xl border border-slate-100 flex flex-col md:flex-row gap-2 md:gap-4 items-start shadow-sm w-full group hover:border-blue-200 transition-colors cursor-pointer" onclick="editLog(${l.id})">
-                    <div class="min-w-[85px] text-[10px] font-black text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg text-center">${l.timestamp}</div>
-                    <div class="flex-1 text-[13px] font-bold text-slate-700 whitespace-pre-wrap leading-relaxed">${l.content}</div>
-                    <div class="flex gap-1 w-full md:w-auto mt-2 md:mt-0 md:opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button onclick="event.stopPropagation(); editLog(${l.id})" class="px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-[9px] font-black">編輯</button>
-                        <button onclick="event.stopPropagation(); deleteLog(${l.id})" class="px-3 py-1.5 bg-red-50 text-red-400 rounded-lg text-[9px] font-black">刪除</button>
-                    </div>
-                </div>
-            `).join('') || '<div class="text-center text-slate-300 py-10 font-bold italic">尚無歷史紀錄</div>';
-        }
-
-        function deleteLog(logId) { if(confirm('刪除紀錄？')) { buyers[currentClientIndex].logs = buyers[currentClientIndex].logs.filter(l => l.id != logId); save(); renderLogs(); render(); } }
-
-        function editLog(logId) {
-            const log = buyers[currentClientIndex].logs.find(l => l.id == logId);
-            if(log) {
-                document.getElementById('newLogContent').value = log.content;
-                document.getElementById('logDate').value = log.timestamp;
-                document.getElementById('editingLogId').value = log.id;
-                document.getElementById('logFormTitle').innerText = '📝 修改紀錄';
-                document.getElementById('btnSaveLog').innerText = '更新';
-                document.getElementById('newLogContent').focus();
-            }
-        }
-
-        function updateAdminNoteInModal() {
-            buyers[currentClientIndex].adminNote = document.getElementById('modalAdminNote').value;
-            save(); render(); showToast('⭐ 筆記已儲存');
-        }
 
         function editItem(idx) {
             const b = buyers[idx];
@@ -630,23 +591,85 @@
             document.getElementById('inputAddress').value = b.address || '';
             document.getElementById('inputStatus').value = b.status;
             document.getElementById('inputBudget').value = b.budget || '';
-            document.getElementById('inputType').value = b.type || '電梯大樓';
-            document.getElementById('inputParking').value = b.parking || '車位不限';
+            document.getElementById('inputType').value = b.type || '';
+            document.getElementById('inputParking').value = b.parking || '';
             document.getElementById('inputRoomRange').value = b.roomRange || '';
             document.getElementById('inputFloor').value = b.floor || '';
             document.getElementById('inputSize').value = b.size || '';
             document.getElementById('inputAge').value = b.age || '';
             document.getElementById('inputArea').value = b.area || '';
+            document.getElementById('inputBuilding').value = b.building || '';
             document.getElementById('inputNote').value = b.note || '';
             document.getElementById('formTitle').innerText = '📝 編輯客戶需求';
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            document.getElementById('inputName').focus();
         }
 
-        function resetForm() { document.getElementById('mainForm').reset(); document.getElementById('editIndex').value = "-1"; document.getElementById('formTitle').innerText = '新增買方'; }
-        function resetLogForm() { document.getElementById('newLogContent').value = ''; document.getElementById('logDate').valueAsDate = new Date(); document.getElementById('editingLogId').value = ''; document.getElementById('logFormTitle').innerText = '✍️ 新增紀錄'; document.getElementById('btnSaveLog').innerText = '儲存日誌'; }
-        function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(buyers)); }
-        function showToast(m) { const t = document.getElementById('toast'); t.innerHTML = m; t.classList.remove('hidden'); setTimeout(() => t.classList.add('hidden'), 2000); }
+        function openLogModal(idx) {
+            currentClientIndex = idx;
+            const b = buyers[idx];
+            document.getElementById('logModalTitle').innerText = `${b.name} - 經營記錄詳情`;
+            document.getElementById('modalAdminNote').value = b.adminNote || '';
+            document.getElementById('logModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; 
+            resetLogForm(); renderLogs();
+        }
+
+        function saveNewLog() {
+            const content = document.getElementById('newLogContent').value.trim();
+            const logDateVal = document.getElementById('logDate').value;
+            const logId = document.getElementById('editingLogId').value;
+            if(!content) return;
+            const logs = buyers[currentClientIndex].logs || [];
+            if (logId) {
+                const lIdx = logs.findIndex(l => l.id == logId);
+                if (lIdx !== -1) { logs[lIdx].content = content; logs[lIdx].timestamp = logDateVal; }
+            } else {
+                logs.unshift({ id: Date.now(), timestamp: logDateVal, content });
+            }
+            logs.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+            buyers[currentClientIndex].logs = logs;
+            save(); renderLogs(); resetLogForm(); render(); showToast('✅ 經營日誌已更新');
+        }
+
+        function renderLogs() {
+            const list = document.getElementById('logHistoryList');
+            const logs = buyers[currentClientIndex].logs || [];
+            list.innerHTML = logs.map(l => `
+                <div class="p-4 bg-white rounded-2xl border border-slate-100 flex gap-4 items-start shadow-sm w-full group hover:border-blue-200 cursor-pointer transition-all" onclick="editLog(${l.id})">
+                    <div class="min-w-[90px] text-[10px] font-black text-emerald-600 bg-emerald-50 px-2 py-1.5 rounded-lg text-center shadow-sm border border-emerald-100">${l.timestamp}</div>
+                    <div class="flex-1 text-[13px] font-bold text-slate-700 whitespace-pre-wrap leading-relaxed">${l.content}</div>
+                    <button onclick="event.stopPropagation(); deleteLog(${l.id})" class="opacity-0 group-hover:opacity-100 px-3 py-1.5 text-red-400 text-[10px] font-bold hover:bg-red-50 rounded-lg transition-all">刪除</button>
+                </div>
+            `).join('') || '<div class="text-center text-slate-300 py-16 font-bold italic">目前沒有歷史接洽紀錄</div>';
+        }
+
+        function editLog(logId) {
+            const log = buyers[currentClientIndex].logs.find(l => l.id == logId);
+            if(log) {
+                document.getElementById('newLogContent').value = log.content;
+                document.getElementById('logDate').value = log.timestamp;
+                document.getElementById('editingLogId').value = log.id;
+                document.getElementById('logFormTitle').innerText = '📝 修改日誌內容';
+                document.getElementById('btnSaveLog').innerText = '確認更新';
+                document.getElementById('newLogContent').focus();
+            }
+        }
+
+        function deleteLog(logId) { if(confirm('確定要永久刪除這則日誌嗎？')) { buyers[currentClientIndex].logs = buyers[currentClientIndex].logs.filter(l => l.id != logId); save(); renderLogs(); render(); } }
+        function updateAdminNoteInModal() { buyers[currentClientIndex].adminNote = document.getElementById('modalAdminNote').value; save(); render(); showToast('⭐ 特質筆記已儲存'); }
+        function closeLogModal() { document.getElementById('logModal').classList.add('hidden'); document.body.style.overflow = 'auto'; }
+        function resetLogForm() { document.getElementById('newLogContent').value = ''; document.getElementById('logDate').valueAsDate = new Date(); document.getElementById('editingLogId').value = ''; document.getElementById('logFormTitle').innerText = '✍️ 當次接洽紀錄'; document.getElementById('btnSaveLog').innerText = '儲存日誌'; }
+        function resetForm() { 
+            document.getElementById('mainForm').reset(); 
+            document.getElementById('editIndex').value = "-1"; 
+            document.getElementById('formTitle').innerText = '新增買方';
+            document.getElementById('inputType').value = "";
+            document.getElementById('inputParking').value = "";
+        }
+        function deleteBuyer(idx) { if(confirm('確定要刪除此買方所有資料？（此動作不可還原）')) { buyers.splice(idx, 1); save(); render(); } }
+        function updateQuickStatus(idx, s) { buyers[idx].status = s; save(); render(); showToast(`📍 客戶狀態已切換為：${s}`); }
+        function exportToCSV() { showToast('💡 匯出功能即將推出'); }
+        function importFromCSV() { showToast('💡 匯出功能即將推出'); }
 
         window.onload = render;
     </script>
