@@ -72,10 +72,6 @@
         .note-quick-tag { font-size: 10px; padding: 3px 8px; background: #f1f5f9; color: #475569; border-radius: 6px; cursor: pointer; transition: all 0.2s; border: 1px solid transparent; font-weight: 600; }
         .note-quick-tag:hover { background: #e2e8f0; color: #1e293b; border-color: #cbd5e1; }
 
-        .line-text { color: #00c300; font-weight: 900; }
-        .clickable-name { cursor: pointer; transition: color 0.2s; }
-        .clickable-name:hover { color: #2563eb; text-decoration: underline; }
-
         .budget-badge {
             background: #1e3a8a;
             color: #ffffff;
@@ -350,7 +346,7 @@
         }
 
         function formatRoom(val) {
-            if (!val || val.trim() === '') return `<span class="text-empty">0房0衛</span>`;
+            if (!val || val.trim() === '') return `<span class="text-empty">不限</span>`;
             if (val.includes('/')) {
                 const p = val.split('/');
                 const r = p[0] || 0;
@@ -392,10 +388,16 @@
 
         function clearDateFilter() { document.getElementById('searchLogDate').value = ''; render(); }
 
+        /**
+         * 核心篩選邏輯：數值重疊檢查
+         * 修正：若 valStr 為空 (代表客戶「不限」條件)，則回傳 true 讓過濾器通過
+         */
         function checkOverlap(valStr, minBound, maxBound) {
-            if (!valStr) return false;
+            if (!valStr || valStr.trim() === '') return true; // 若客戶資料為空，代表不限，直接通過篩選
+            
             const parts = valStr.toString().split(/[-~ /]+/).map(p => parseFloat(p)).filter(p => !isNaN(p));
-            if (parts.length === 0) return false;
+            if (parts.length === 0) return true; // 解析不出數字也視為通過
+            
             const min = Math.min(...parts);
             const max = Math.max(...parts);
             const checkMin = minBound === null ? -Infinity : minBound;
@@ -432,9 +434,9 @@
                 // 3. 狀態篩選
                 if (fStatus !== '全部' && b.status !== fStatus) return false;
 
-                // 4. 類型篩選 (關鍵修正: 若買方類型為空，表示「類型不限」，則應匹配任何篩選)
+                // 4. 類型篩選 (若客戶類型為空則不限)
                 if (fType !== '全部') {
-                    if (b.type !== '' && b.type !== fType) return false;
+                    if (b.type && b.type !== '' && b.type !== fType) return false;
                 }
 
                 // 5. 預算篩選
@@ -443,14 +445,17 @@
                     if (fBudget === '1000-2000' && !checkOverlap(b.budget, 1000, 2000)) return false;
                     if (fBudget === '2000-3500' && !checkOverlap(b.budget, 2000, 3500)) return false;
                     if (fBudget === '3500-5000' && !checkOverlap(b.budget, 3500, 5000)) return false;
-                    if (fBudget === '5000↑' && !checkOverlap(b.budget, 5000, 99999)) return false;
+                    if (fBudget === '5000↑' && !checkOverlap(b.budget, 5000, 999999)) return false;
                 }
 
                 // 6. 房數篩選
                 if (fRoom !== '不限') {
-                    const r = parseInt(b.roomRange) || 0;
-                    if (fRoom === '4' && r < 4) return false;
-                    if (fRoom !== '4' && r != parseInt(fRoom)) return false;
+                    // 若資料留白視為不限，直接通過
+                    if (b.roomRange && b.roomRange.trim() !== '') {
+                        const r = parseInt(b.roomRange) || 0;
+                        if (fRoom === '4' && r < 4) return false;
+                        if (fRoom !== '4' && r != parseInt(fRoom)) return false;
+                    }
                 }
 
                 // 7. 屋齡篩選
@@ -469,9 +474,9 @@
                     if (fSize === '60↑' && !checkOverlap(b.size, 60, 9999)) return false;
                 }
 
-                // 9. 車位篩選 (關鍵修正: 若買方車位為空，表示「車位不限」，則應匹配任何篩選)
+                // 9. 車位篩選
                 if (fParking !== '不限') {
-                    if (b.parking !== '' && b.parking !== fParking) return false;
+                    if (b.parking && b.parking !== '' && b.parking !== fParking) return false;
                 }
 
                 return true;
@@ -485,13 +490,13 @@
                 const noteTags = b.note ? b.note.split(/\s+/).filter(t => t) : [];
                 const latestLog = b.logs && b.logs.length > 0 ? b.logs[0] : null;
 
-                const displayType = d(b.type, '類型不限');
+                const displayType = d(b.type, '不限');
                 const displayRoom = formatRoom(b.roomRange);
                 const displaySize = b.size && b.size.trim() !== '' ? `${b.size}坪` : `<span class="text-empty">不限</span>`;
                 const displayFloor = b.floor && b.floor.trim() !== '' ? `${b.floor}樓` : `<span class="text-empty">不限</span>`;
-                const displayParking = d(b.parking, '車位不限');
+                const displayParking = d(b.parking, '不限');
                 const displayAge = b.age && b.age.trim() !== '' ? `${b.age}年` : `<span class="text-empty">不限</span>`;
-                const displayBudget = b.budget && b.budget.trim() !== '' ? `${b.budget}萬` : `<span class="text-empty">0萬</span>`;
+                const displayBudget = b.budget && b.budget.trim() !== '' ? `${b.budget}萬` : `<span class="text-empty">不限</span>`;
 
                 return `
                     <div class="card p-5 md:p-6 ${genderClass} relative overflow-hidden card-hover">
@@ -509,7 +514,7 @@
                             </select>
                             <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-bold text-slate-500 w-full md:w-auto">
                                 <span onclick="copy('${b.phone}', '電話')" class="copy-hint hover:text-blue-500">📞 ${d(b.phone, '未填')}</span>
-                                <span onclick="copy('${b.line}', 'LINE')" class="copy-hint line-text">💬 <span class="text-slate-500 mr-1">LINE:</span>${d(b.line, '未填')}</span>
+                                <span onclick="copy('${b.line}', 'LINE')" class="copy-hint text-green-600">💬 <span class="text-slate-500 mr-1">LINE:</span>${d(b.line, '未填')}</span>
                                 ${b.address && b.address.trim() !== '' ? `<a href="https://www.google.com/maps/search/${encodeURIComponent(b.address)}" target="_blank" class="flex items-center gap-1 text-blue-600 hover:underline">📍 <span class="text-slate-500 mr-1">地址:</span>${b.address}</a>` : `<span>📍 <span class="text-slate-500 mr-1">地址:</span>${d(b.address, '未填')}</span>`}
                             </div>
                         </div>
@@ -550,7 +555,7 @@
                         </div>
                     </div>
                 `;
-            }).join('') || '<div class="card p-12 text-center text-slate-400 font-bold italic">目前沒有任何買方資料</div>';
+            }).join('') || '<div class="card p-12 text-center text-slate-400 font-bold italic">目前沒有符合條件的客戶</div>';
         }
 
         document.getElementById('mainForm').onsubmit = function(e) {
