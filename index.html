@@ -45,7 +45,7 @@
         .custom-scroll::-webkit-scrollbar-track { background: transparent; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
 
-        .quick-insert-btn { padding: 4px 8px; font-size: 10px; font-weight: 700; background: white; color: #64748b; border: 1px solid #e2e8f0; border-radius: 8px; transition: all 0.2s; white-space: nowrap; }
+        .quick-insert-btn { padding: 4px 8px; font-size: 10px; font-weight: 700; background: white; color: #64748b; border: 1px solid #e2e8f0; border-radius: 8px; transition: all 0.2s; white-space: nowrap; cursor: pointer; }
         .quick-insert-btn:hover { border-color: #3b82f6; color: #2563eb; background: #eff6ff; transform: translateY(-1px); }
         .quick-insert-btn.blue { color: #2563eb; border-color: #dbeafe; }
         .quick-insert-btn.green { color: #16a34a; border-color: #dcfce7; }
@@ -53,18 +53,33 @@
         .quick-insert-btn.red { color: #ef4444; border-color: #fee2e2; }
 
         .data-manage-btn { padding: 8px 16px; font-size: 12px; font-weight: 800; border-radius: 12px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        
+        /* 備註專用快速標籤 */
+        .note-quick-tag { 
+            font-size: 10px; 
+            padding: 3px 8px; 
+            background: #f1f5f9; 
+            color: #475569; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+            border: 1px solid transparent;
+            font-weight: 600;
+        }
+        .note-quick-tag:hover { background: #e2e8f0; color: #1e293b; border-color: #cbd5e1; }
+        .note-quick-tag:active { transform: scale(0.95); }
     </style>
 </head>
 <body class="p-3 md:p-6">
 
     <div class="max-w-7xl mx-auto">
-        <header class="flex justify-between items-center mb-6 md:mb-8">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 gap-4">
             <h1 class="text-2xl md:text-3xl font-black text-slate-900 italic tracking-tighter">CRM <span class="text-blue-600">PRO</span></h1>
-            <div class="flex items-center gap-3">
-                <div class="text-[10px] font-bold text-slate-400 bg-white px-3 py-1 rounded-full border border-slate-100 hidden md:block">智慧客管系統 v3.5</div>
-                <div class="flex gap-2">
-                    <button onclick="exportToCSV()" class="data-manage-btn bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">📤 匯出 CSV</button>
-                    <label class="data-manage-btn bg-slate-800 text-white cursor-pointer hover:bg-slate-900">
+            <div class="flex items-center gap-3 w-full md:w-auto">
+                <div class="text-[10px] font-bold text-slate-400 bg-white px-3 py-1 rounded-full border border-slate-100 hidden lg:block">智慧客管系統 v3.6</div>
+                <div class="flex gap-2 w-full md:w-auto">
+                    <button onclick="exportToCSV()" class="flex-1 md:flex-none data-manage-btn bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 justify-center">📤 匯出 CSV</button>
+                    <label class="flex-1 md:flex-none data-manage-btn bg-slate-800 text-white cursor-pointer hover:bg-slate-900 justify-center">
                         📥 匯入 CSV
                         <input type="file" id="importFile" accept=".csv" class="hidden" onchange="importFromCSV(this)">
                     </label>
@@ -121,7 +136,27 @@
                             <input type="text" id="inputAge" placeholder="屋齡 10-20" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm text-center">
                         </div>
                         <input type="text" id="inputArea" placeholder="區域需求 (空白分隔)" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm">
-                        <textarea id="inputNote" rows="2" placeholder="備註標籤 (空白分隔)" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm resize-none"></textarea>
+                        
+                        <!-- 備註與快速標籤 -->
+                        <div class="space-y-2">
+                            <textarea id="inputNote" rows="2" placeholder="備註標籤 (空白分隔)" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm resize-none"></textarea>
+                            <div class="flex flex-wrap gap-1">
+                                <span class="note-quick-tag" onclick="insertQuickTag('非凶宅')">非凶宅</span>
+                                <span class="note-quick-tag" onclick="insertQuickTag('格局方正')">格局方正</span>
+                                <span class="note-quick-tag" onclick="insertQuickTag('邊間')">邊間</span>
+                                <span class="note-quick-tag" onclick="insertQuickTag('對外窗')">對外窗</span>
+                                <span class="note-quick-tag" onclick="insertQuickTag('天然瓦斯')">天然瓦斯</span>
+                                <span class="note-quick-tag" onclick="insertQuickTag('無暗房')">無暗房</span>
+                                <span class="note-quick-tag" onclick="insertQuickTag('無漏水壁癌')">無漏水壁癌</span>
+                                <span class="note-quick-tag" onclick="insertQuickTag('排除頂樓')">排除頂樓</span>
+                                <span class="note-quick-tag" onclick="insertQuickTag('排除夾層')">排除夾層</span>
+                                <span class="note-quick-tag" onclick="insertQuickTag('一樓好停')">一樓好停</span>
+                                <span class="note-quick-tag" onclick="insertQuickTag('無障礙')">無障礙</span>
+                                <span class="note-quick-tag" onclick="insertQuickTag('頂樓加蓋')">頂樓加蓋</span>
+                                <span class="note-quick-tag" onclick="insertQuickTag('收租屋')">收租屋</span>
+                                <span class="note-quick-tag" onclick="insertQuickTag('神明廳')">神明廳</span>
+                            </div>
+                        </div>
                     </div>
                     <button type="submit" class="w-full btn-primary text-white font-black py-4 rounded-xl shadow-lg mt-2">儲存客戶資料</button>
                 </form>
@@ -234,8 +269,8 @@
     <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-8 py-3 rounded-2xl hidden z-[100] text-xs font-black shadow-2xl"></div>
 
     <script>
-        // 版本控制，若有重大更新可變更 key 以防讀取錯誤
-        const STORAGE_KEY = 'crm_buyers_v3_5';
+        // 版本控制
+        const STORAGE_KEY = 'crm_buyers_v3_6';
         let buyers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
         let currentClientIndex = -1;
 
@@ -249,69 +284,39 @@
             '不經營': 'bg-slate-800 text-white'
         };
 
-        // --- 資料管理功能 (Excel/CSV 匯入匯出) ---
+        // --- 資料管理功能 ---
 
         function exportToCSV() {
             if (buyers.length === 0) {
                 showToast('⚠️ 目前沒有客戶資料可供匯出');
                 return;
             }
-
-            // CSV 欄位定義
-            const headers = [
-                '姓名', '簡碼', '電話', 'LINE_ID', '地址', '狀態', 
-                '預算', '房屋類型', '車位', '房衛需求', '樓層', 
-                '坪數', '屋齡', '需求區域', '備註標籤', '特質筆記', 
-                '接洽紀錄', '建立日期'
-            ];
-
+            const headers = ['姓名', '簡碼', '電話', 'LINE_ID', '地址', '狀態', '預算', '房屋類型', '車位', '房衛需求', '樓層', '坪數', '屋齡', '需求區域', '備註標籤', '特質筆記', '接洽紀錄', '建立日期'];
             const rows = buyers.map(b => {
-                // 將接洽紀錄 logs 陣列序列化為單一字串，以便存放在儲存格中
                 const logStr = (b.logs || []).map(l => `[${l.timestamp}] ${l.content}`).join(' | ');
-                
-                return [
-                    b.name, b.code, b.phone, b.line, b.address, b.status,
-                    b.budget, b.type, b.parking, b.roomRange, b.floor,
-                    b.size, b.age, b.area, b.note, b.adminNote,
-                    logStr, b.createdAt
-                ].map(val => `"${(val || '').toString().replace(/"/g, '""')}"`).join(',');
+                return [b.name, b.code, b.phone, b.line, b.address, b.status, b.budget, b.type, b.parking, b.roomRange, b.floor, b.size, b.age, b.area, b.note, b.adminNote, logStr, b.createdAt].map(val => `"${(val || '').toString().replace(/"/g, '""')}"`).join(',');
             });
-
-            const csvContent = "\ufeff" + headers.join(',') + "\n" + rows.join('\n'); // 加 BOM 確保 Excel 讀取中文不亂碼
+            const csvContent = "\ufeff" + headers.join(',') + "\n" + rows.join('\n');
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            
-            link.setAttribute("href", url);
-            link.setAttribute("download", `CRM_Buyers_Export_${new Date().toLocaleDateString().replace(/\//g, '-')}.csv`);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
+            link.href = URL.createObjectURL(blob);
+            link.download = `CRM_Export_${new Date().toISOString().split('T')[0]}.csv`;
             link.click();
-            document.body.removeChild(link);
             showToast('✅ 匯出完成');
         }
 
         function importFromCSV(input) {
             const file = input.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = function(e) {
                 const text = e.target.result;
                 const lines = text.split(/\r?\n/);
                 if (lines.length < 2) return;
-
-                const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
                 const importedData = [];
-
-                // 解析剩餘行
                 for (let i = 1; i < lines.length; i++) {
                     if (!lines[i].trim()) continue;
-                    
-                    // 簡易 CSV 解析器（處理引號與逗號）
-                    const values = [];
-                    let current = '';
-                    let inQuotes = false;
+                    const values = []; let current = ''; let inQuotes = false;
                     for (let char of lines[i]) {
                         if (char === '"' && !inQuotes) inQuotes = true;
                         else if (char === '"' && inQuotes) inQuotes = false;
@@ -319,51 +324,25 @@
                         else current += char;
                     }
                     values.push(current);
-
-                    const b = {};
                     const getVal = (idx) => (values[idx] || '').replace(/^"|"$/g, '').trim();
-
-                    // 按索引映射欄位 (基於 export 定義的順序)
-                    b.name = getVal(0);
-                    b.code = getVal(1);
-                    b.phone = getVal(2);
-                    b.line = getVal(3);
-                    b.address = getVal(4);
-                    b.status = getVal(5) || '經營中';
-                    b.budget = getVal(6);
-                    b.type = getVal(7);
-                    b.parking = getVal(8);
-                    b.roomRange = getVal(9);
-                    b.floor = getVal(10);
-                    b.size = getVal(11);
-                    b.age = getVal(12);
-                    b.area = getVal(13);
-                    b.note = getVal(14);
-                    b.adminNote = getVal(15);
-                    
-                    // 解析接洽紀錄
+                    const b = {
+                        name: getVal(0), code: getVal(1), phone: getVal(2), line: getVal(3), address: getVal(4), status: getVal(5) || '經營中',
+                        budget: getVal(6), type: getVal(7), parking: getVal(8), roomRange: getVal(9), floor: getVal(10), size: getVal(11),
+                        age: getVal(12), area: getVal(13), note: getVal(14), adminNote: getVal(15), createdAt: getVal(17) || new Date().toLocaleDateString()
+                    };
                     const logRaw = getVal(16);
                     b.logs = logRaw ? logRaw.split(' | ').map(entry => {
                         const match = entry.match(/^\[(.*?)\] (.*)$/);
                         return match ? { id: Date.now() + Math.random(), timestamp: match[1], content: match[2] } : null;
                     }).filter(v => v) : [];
-                    
-                    b.createdAt = getVal(17) || new Date().toLocaleDateString();
-
                     if (b.name) importedData.push(b);
                 }
-
                 if (importedData.length > 0) {
-                    if (confirm(`準備匯入 ${importedData.length} 位客戶，是否覆蓋現有資料？\n(取消則會將資料新增至現有列表末端)`)) {
-                        buyers = importedData;
-                    } else {
-                        buyers = [...buyers, ...importedData];
-                    }
-                    save();
-                    render();
-                    showToast(`✅ 已匯入 ${importedData.length} 位客戶`);
+                    if (confirm(`匯入 ${importedData.length} 位客戶，是否覆蓋現有資料？`)) buyers = importedData;
+                    else buyers = [...buyers, ...importedData];
+                    save(); render(); showToast(`✅ 匯入完成`);
                 }
-                input.value = ''; // 清空 file input
+                input.value = '';
             };
             reader.readAsText(file);
         }
@@ -387,7 +366,7 @@
         }
 
         function copy(text, label) {
-            if (!text || text === '') return;
+            if (!text) return;
             const temp = document.createElement('textarea');
             temp.value = text;
             document.body.appendChild(temp);
@@ -398,7 +377,7 @@
         }
 
         function openMap(query) {
-            if (!query || query === '') return;
+            if (!query) return;
             window.open(`https://www.google.com/maps/search/${encodeURIComponent(query)}`, '_blank');
         }
 
@@ -414,11 +393,7 @@
             return 'border-other';
         }
 
-        function d(v) { 
-            return (v !== undefined && v !== null && v.trim() !== '') 
-                ? v 
-                : '<span class="text-empty">(未填)</span>'; 
-        }
+        function d(v) { return (v && v.trim() !== '') ? v : '<span class="text-empty">(未填)</span>'; }
 
         function updateQuickStatus(idx, newStatus) {
             buyers[idx].status = newStatus;
@@ -436,6 +411,15 @@
             area.focus();
             const newPos = start + space.length + text.length;
             area.setSelectionRange(newPos, newPos);
+        }
+
+        // 新增備註快速標籤邏輯
+        function insertQuickTag(tag) {
+            const area = document.getElementById('inputNote');
+            let val = area.value.trim();
+            if (val.includes(tag)) return; // 避免重複
+            area.value = val + (val === '' ? '' : ' ') + tag;
+            area.focus();
         }
 
         function render() {
@@ -505,56 +489,38 @@
                         <div class="absolute top-5 right-5 flex items-center">
                             <span class="bg-blue-600 text-white text-[10px] md:text-xs font-black px-3 py-1.5 rounded-full shadow-lg">💰 ${b.budget || '0'}萬</span>
                         </div>
-
                         <div class="flex flex-wrap items-center gap-x-4 gap-y-3 mb-4 pr-16 md:pr-24">
                             <div class="flex items-center gap-2">
-                                <span onclick="copy('${b.code || ''}', '簡碼')" class="bg-slate-800 text-white text-[9px] px-2 py-0.5 rounded-full font-black cursor-pointer hover:bg-blue-600 shrink-0">${b.code || 'NO'}</span>
+                                <span onclick="copy('${b.code}', '簡碼')" class="bg-slate-800 text-white text-[9px] px-2 py-0.5 rounded-full font-black cursor-pointer hover:bg-blue-600 shrink-0">${b.code || 'NO'}</span>
                                 <h3 onclick="copy('${b.name}', '姓名')" class="text-lg md:text-xl font-black text-slate-900 shrink-0 cursor-pointer hover:text-blue-600 transition-colors">${b.name}</h3>
                             </div>
-                            
                             <div class="relative shrink-0">
                                 <select onchange="updateQuickStatus(${idx}, this.value)" class="status-select ${statusColors[b.status]}">
                                     ${statusOptions.map(opt => `<option value="${opt}" ${b.status === opt ? 'selected' : ''}>${opt}</option>`).join('')}
                                 </select>
                             </div>
-
                             <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs font-bold text-slate-500 w-full md:w-auto mt-1 md:mt-0">
-                                <span onclick="copy('${b.phone}', '電話')" class="copy-hint flex items-center gap-1 hover:text-blue-500">
-                                    <span class="text-blue-500">📞</span> ${d(b.phone)}
-                                </span>
-                                <span onclick="copy('${b.line}', 'LINE')" class="copy-hint flex items-center gap-1 hover:text-green-500">
-                                    <span class="text-green-500">💬</span> ${d(b.line)}
-                                </span>
-                                <span onclick="openMap('${b.address}')" class="copy-hint flex items-center gap-1 hover:text-red-500 max-w-full overflow-hidden text-ellipsis">
-                                    <span class="text-red-500">📍</span> ${d(b.address)}
-                                </span>
+                                <span onclick="copy('${b.phone}', '電話')" class="copy-hint flex items-center gap-1 hover:text-blue-500"><span class="text-blue-500">📞</span> ${d(b.phone)}</span>
+                                <span onclick="copy('${b.line}', 'LINE')" class="copy-hint flex items-center gap-1 hover:text-green-500"><span class="text-green-500">💬</span> ${d(b.line)}</span>
+                                <span onclick="openMap('${b.address}')" class="copy-hint flex items-center gap-1 hover:text-red-500 max-w-full overflow-hidden text-ellipsis"><span class="text-red-500">📍</span> ${d(b.address)}</span>
                             </div>
                         </div>
-
                         <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="info-pill">🏠 ${b.type || '房屋'}</span>
-                            <span class="info-pill">🛏️ ${formatRoom(b.roomRange)}</span>
-                            <span class="info-pill">📏 ${b.size || '0'}坪</span>
-                            <span class="info-pill">🏢 ${b.floor || '0'}樓</span>
-                            <span class="info-pill">🚗 ${b.parking || '車位'}</span>
-                            <span class="info-pill">⌛ ${b.age || '0'}年</span>
+                            <span class="info-pill">🏠 ${b.type || '房屋'}</span><span class="info-pill">🛏️ ${formatRoom(b.roomRange)}</span><span class="info-pill">📏 ${b.size || '0'}坪</span><span class="info-pill">🏢 ${b.floor || '0'}樓</span><span class="info-pill">🚗 ${b.parking || '車位'}</span><span class="info-pill">⌛ ${b.age || '0'}年</span>
                         </div>
-
                         <div class="flex flex-wrap items-center gap-1.5 mb-4">
                             ${areaTags.map(t => `<span onclick="openMap('${t}')" class="area-tag">🗺️ ${t}</span>`).join('')}
                             ${noteTags.map(t => `<span class="note-tag"># ${t}</span>`).join('')}
                         </div>
-
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-5">
                             ${b.adminNote ? `<div onclick="openLogModal(${idx})" class="bg-amber-50/50 p-2.5 rounded-xl border border-amber-200 text-[10px] md:text-[11px] font-bold text-slate-600 italic line-clamp-2 cursor-pointer">⭐ 筆記: ${b.adminNote}</div>` : ''}
                             ${latestLog ? `<div onclick="openLogModal(${idx})" class="bg-emerald-50/50 p-2.5 rounded-xl border border-emerald-100 text-[10px] md:text-[11px] font-bold text-slate-600 line-clamp-2 cursor-pointer">📅 ${latestLog.timestamp}: ${latestLog.content}</div>` : ''}
                         </div>
-
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-4 border-t border-slate-50">
                             <span class="text-[8px] md:text-[9px] font-bold text-slate-300 uppercase tracking-widest italic order-2 sm:order-1">SINCE: ${b.createdAt || '-'}</span>
                             <div class="flex flex-wrap gap-2 w-full sm:w-auto order-1 sm:order-2">
                                 <button onclick="editItem(${idx})" class="flex-1 sm:flex-none px-4 py-2.5 bg-blue-50 text-blue-700 rounded-xl text-xs font-black hover:bg-blue-100 border border-blue-100">編輯需求</button>
-                                <button onclick="openLogModal(${idx})" class="flex-1 sm:flex-none px-4 py-2.5 bg-blue-600 text-white rounded-xl text-xs font-black shadow-md hover:bg-blue-700">對話紀錄 / 筆記</button>
+                                <button onclick="openLogModal(${idx})" class="flex-1 sm:flex-none px-4 py-2.5 bg-blue-600 text-white rounded-xl text-xs font-black shadow-md hover:bg-blue-700">對話紀錄</button>
                                 <button onclick="deleteBuyer(${idx})" class="px-3 py-2.5 bg-slate-50 text-slate-400 rounded-xl text-xs font-bold hover:bg-red-50 hover:text-red-400">刪除</button>
                             </div>
                         </div>
@@ -593,9 +559,8 @@
         function deleteBuyer(idx) { if(confirm('確定要永久刪除此客戶嗎？')) { buyers.splice(idx, 1); save(); render(); } }
 
         function openLogModal(idx) {
-            currentClientIndex = idx;
-            const b = buyers[idx];
-            document.getElementById('logModalTitle').innerText = `${b.name} - 客戶經營細節`;
+            currentClientIndex = idx; const b = buyers[idx];
+            document.getElementById('logModalTitle').innerText = `${b.name} - 經營詳情`;
             document.getElementById('modalAdminNote').value = b.adminNote || '';
             document.getElementById('logModal').classList.remove('hidden');
             document.body.style.overflow = 'hidden'; 
@@ -618,8 +583,7 @@
             }
             logs.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
             buyers[currentClientIndex].logs = logs;
-            save(); renderLogs(); resetLogForm(); render();
-            showToast('✅ 接洽日誌已儲存');
+            save(); renderLogs(); resetLogForm(); render(); showToast('✅ 日誌已儲存');
         }
 
         function renderLogs() {
@@ -629,15 +593,15 @@
                 <div class="p-3 bg-white rounded-xl border border-slate-100 flex flex-col md:flex-row gap-2 md:gap-4 items-start shadow-sm w-full group hover:border-blue-200 transition-colors cursor-pointer" onclick="editLog(${l.id})">
                     <div class="min-w-[85px] text-[10px] font-black text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg text-center">${l.timestamp}</div>
                     <div class="flex-1 text-[13px] font-bold text-slate-700 whitespace-pre-wrap leading-relaxed">${l.content}</div>
-                    <div class="flex gap-1 w-full md:w-auto mt-2 md:mt-0 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button onclick="event.stopPropagation(); editLog(${l.id})" class="flex-1 md:flex-none px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-[9px] font-black">編輯</button>
-                        <button onclick="event.stopPropagation(); deleteLog(${l.id})" class="flex-1 md:flex-none px-3 py-1.5 bg-red-50 text-red-400 rounded-lg text-[9px] font-black">刪除</button>
+                    <div class="flex gap-1 w-full md:w-auto mt-2 md:mt-0 md:opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button onclick="event.stopPropagation(); editLog(${l.id})" class="px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-[9px] font-black">編輯</button>
+                        <button onclick="event.stopPropagation(); deleteLog(${l.id})" class="px-3 py-1.5 bg-red-50 text-red-400 rounded-lg text-[9px] font-black">刪除</button>
                     </div>
                 </div>
             `).join('') || '<div class="text-center text-slate-300 py-10 font-bold italic">尚無歷史紀錄</div>';
         }
 
-        function deleteLog(logId) { if(confirm('刪除這筆接洽紀錄？')) { buyers[currentClientIndex].logs = buyers[currentClientIndex].logs.filter(l => l.id != logId); save(); renderLogs(); render(); } }
+        function deleteLog(logId) { if(confirm('刪除紀錄？')) { buyers[currentClientIndex].logs = buyers[currentClientIndex].logs.filter(l => l.id != logId); save(); renderLogs(); render(); } }
 
         function editLog(logId) {
             const log = buyers[currentClientIndex].logs.find(l => l.id == logId);
@@ -653,7 +617,7 @@
 
         function updateAdminNoteInModal() {
             buyers[currentClientIndex].adminNote = document.getElementById('modalAdminNote').value;
-            save(); render(); showToast('⭐ 客戶特質筆記已儲存');
+            save(); render(); showToast('⭐ 筆記已儲存');
         }
 
         function editItem(idx) {
