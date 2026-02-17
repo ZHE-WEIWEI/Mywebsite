@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>房仲菁英 CRM Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-tap-highlight-color: transparent; }
+        .btn-primary { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); transition: all 0.3s; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+        .card { background: white; border-radius: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 10px 15px -5px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; transition: all 0.2s; }
+        
+        .status-select { 
+            padding: 4px 12px; 
+            border-radius: 999px; 
+            font-size: 0.75rem; 
+            font-weight: 800; 
+            border: none; 
+            appearance: none; 
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        
+        .border-male { border: 2px solid #60a5fa !important; border-left-width: 8px !important; }
+        .border-female { border: 2px solid #f472b6 !important; border-left-width: 8px !important; }
+        .border-other { border: 2px solid #cbd5e1 !important; border-left-width: 8px !important; }
+
+        .info-pill { background: #f8fafc; border: 1px solid #f1f5f9; padding: 6px 12px; border-radius: 10px; font-size: 12px; font-weight: 700; color: #475569; display: inline-flex; align-items: center; gap: 4px; }
+        .area-tag { background: #eff6ff; color: #2563eb; border: 1px solid #dbeafe; padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; transition: all 0.2s; }
+        .area-tag:hover { background: #dbeafe; }
+        .note-tag { background: #f0fdf4; color: #16a34a; border: 1px solid #dcfce7; padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 800; }
+
+        .filter-select { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 8px 12px; font-size: 12px; font-weight: 700; outline: none; transition: all 0.2s; width: 100%; }
+
+        .modal-bg { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); }
+        .copy-hint { cursor: pointer; transition: opacity 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .copy-hint:active { opacity: 0.5; }
+        
+        .text-empty { color: #cbd5e1; font-style: italic; font-weight: 500; font-size: 0.85rem; }
+        
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+
+        .quick-insert-btn { padding: 4px 8px; font-size: 10px; font-weight: 700; background: white; color: #64748b; border: 1px solid #e2e8f0; border-radius: 8px; transition: all 0.2s; white-space: nowrap; }
+        .quick-insert-btn:hover { border-color: #3b82f6; color: #2563eb; background: #eff6ff; transform: translateY(-1px); }
+        .quick-insert-btn.blue { color: #2563eb; border-color: #dbeafe; }
+        .quick-insert-btn.green { color: #16a34a; border-color: #dcfce7; }
+        .quick-insert-btn.amber { color: #d97706; border-color: #fef3c7; }
+        .quick-insert-btn.red { color: #ef4444; border-color: #fee2e2; }
+    </style>
+</head>
+<body class="p-3 md:p-6">
+
+    <div class="max-w-7xl mx-auto">
+        <header class="flex justify-between items-center mb-6 md:mb-8">
+            <h1 class="text-2xl md:text-3xl font-black text-slate-900 italic tracking-tighter">CRM <span class="text-blue-600">PRO</span></h1>
+            <div class="text-[10px] font-bold text-slate-400 bg-white px-3 py-1 rounded-full border border-slate-100">智慧客管系統 v3.3</div>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
+            <!-- 新增/編輯區 (側邊欄) -->
+            <section class="card p-5 md:p-6 h-fit lg:col-span-1 lg:sticky lg:top-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 id="formTitle" class="text-lg font-black text-slate-800">新增買方</h2>
+                    <button onclick="resetForm()" class="text-[10px] font-bold text-slate-400 hover:text-blue-500 underline">重設</button>
+                </div>
+                <form id="mainForm" class="space-y-4">
+                    <input type="hidden" id="editIndex" value="-1">
+                    <div class="space-y-3">
+                        <input type="text" id="inputName" placeholder="姓名 (例: 林先生 /小姐)" class="w-full bg-slate-50 border-none rounded-xl p-3.5 text-sm font-bold focus:ring-2 focus:ring-blue-500" required>
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" id="inputCode" placeholder="簡碼 (例: A01)" class="w-full bg-slate-50 border-none rounded-xl p-3.5 text-sm font-bold">
+                            <select id="inputStatus" class="w-full bg-slate-50 border-none rounded-xl p-3.5 text-sm font-bold">
+                                <option value="經營中">🔄 經營中</option>
+                                <option value="A買">🌟 A買</option>
+                                <option value="失聯中">📵 失聯中</option>
+                                <option value="帶看過">👀 帶看過</option>
+                                <option value="LINE好友">💬 LINE好友</option>
+                                <option value="不經營">⏹️ 不經營</option>
+                            </select>
+                        </div>
+                        <input type="text" id="inputPhone" placeholder="電話" class="w-full bg-slate-50 border-none rounded-xl p-3.5 text-sm font-bold">
+                        <input type="text" id="inputLine" placeholder="LINE ID" class="w-full bg-slate-50 border-none rounded-xl p-3.5 text-sm font-bold">
+                        <input type="text" id="inputAddress" placeholder="通訊地址" class="w-full bg-slate-50 border-none rounded-xl p-3.5 text-sm font-bold">
+                    </div>
+
+                    <div class="p-4 bg-blue-50/50 rounded-2xl border border-blue-100 space-y-3">
+                        <p class="text-[10px] font-black text-blue-500 uppercase italic">📋 購屋需求詳情</p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <select id="inputType" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm">
+                                <option value="電梯大樓">電梯大樓</option><option value="華廈">華廈</option><option value="公寓">公寓</option><option value="透天">透天</option><option value="別墅">別墅</option><option value="店面">店面</option>
+                            </select>
+                            <select id="inputParking" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm">
+                                <option value="車位不限">車位不限</option>
+                                <option value="坡道平面">坡道平面</option>
+                                <option value="坡道機械">坡道機械</option>
+                                <option value="昇降平面">昇降平面</option>
+                                <option value="昇降機械">昇降機械</option>
+                                <option value="塔式車位">塔式車位</option>
+                                <option value="不需要">不需要</option>
+                            </select>
+                            <input type="text" id="inputBudget" placeholder="預算(萬)" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm text-center">
+                            <input type="text" id="inputRoomRange" placeholder="房/衛 (3/2)" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm text-center">
+                            <input type="text" id="inputFloor" placeholder="樓層 1-5" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm text-center">
+                            <input type="text" id="inputSize" placeholder="坪數 25-45" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm text-center">
+                            <input type="text" id="inputAge" placeholder="屋齡 10-20" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm text-center">
+                        </div>
+                        <input type="text" id="inputArea" placeholder="區域需求 (空白分隔)" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm">
+                        <textarea id="inputNote" rows="2" placeholder="備註標籤 (空白分隔)" class="w-full bg-white rounded-lg p-2.5 text-[11px] font-bold shadow-sm resize-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full btn-primary text-white font-black py-4 rounded-xl shadow-lg mt-2">儲存客戶資料</button>
+                </form>
+            </section>
+
+            <!-- 列表區 -->
+            <section class="lg:col-span-3 space-y-4">
+                <div class="card p-4 md:p-5 space-y-4">
+                    <div class="relative group">
+                        <span class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors">🔍</span>
+                        <input type="text" id="searchInput" oninput="render()" placeholder="搜尋姓名、電話、區域或筆記..." class="w-full pl-12 pr-6 py-3.5 rounded-xl border-none bg-slate-50 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <!-- 篩選器 -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2 md:gap-3">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] font-black text-slate-400 pl-1 uppercase">狀態</label>
+                            <select id="filterStatus" onchange="render()" class="filter-select"><option value="全部">全部</option><option value="經營中">經營中</option><option value="A買">A買</option><option value="失聯中">失聯中</option><option value="帶看過">帶看過</option><option value="LINE好友">LINE好友</option><option value="不經營">不經營</option></select>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] font-black text-slate-400 pl-1 uppercase">類型</label>
+                            <select id="filterType" onchange="render()" class="filter-select"><option value="全部">全部</option><option value="電梯大樓">大樓</option><option value="華廈">華廈</option><option value="公寓">公寓</option><option value="透天">透天</option><option value="別墅">別墅</option><option value="店面">店面</option></select>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] font-black text-slate-400 pl-1 uppercase">預算</label>
+                            <select id="filterBudget" onchange="render()" class="filter-select"><option value="不限">不限</option><option value="1000↓">1000↓</option><option value="1000-2500">1K-2.5K</option><option value="2500-5000">2.5K-5K</option><option value="5000↑">5000↑</option></select>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] font-black text-slate-400 pl-1 uppercase">房數</label>
+                            <select id="filterRoom" onchange="render()" class="filter-select"><option value="不限">不限</option><option value="1">1房</option><option value="2">2房</option><option value="3">3房</option><option value="4">4房+</option></select>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] font-black text-slate-400 pl-1 uppercase">樓層</label>
+                            <select id="filterFloor" onchange="render()" class="filter-select"><option value="不限">不限</option><option value="1-5">1-5F</option><option value="6-12">6-12F</option><option value="13">13F+</option></select>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] font-black text-slate-400 pl-1 uppercase">屋齡</label>
+                            <select id="filterAge" onchange="render()" class="filter-select"><option value="不限">不限</option><option value="5">5年內</option><option value="5-15">5-15年</option><option value="15-30">15-30年</option><option value="30">30年+</option></select>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] font-black text-slate-400 pl-1 uppercase">坪數</label>
+                            <select id="filterSize" onchange="render()" class="filter-select"><option value="不限">不限</option><option value="25↓">25↓</option><option value="25-45">25-45</option><option value="45-65">45-65</option><option value="65↑">65↑</option></select>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] font-black text-slate-400 pl-1 uppercase">車位</label>
+                            <select id="filterParking" onchange="render()" class="filter-select"><option value="不限">不限</option><option value="坡道平面">平車</option><option value="坡道機械">坡機</option><option value="其他">其他</option></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="dataList" class="space-y-4"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 彈窗 (日誌與筆記) -->
+    <div id="logModal" class="fixed inset-0 z-[60] hidden modal-bg flex items-center justify-center p-2 md:p-4">
+        <div class="card w-full max-w-5xl bg-white p-4 md:p-6 h-[95vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl md:text-2xl font-black text-slate-800" id="logModalTitle">經營與日誌</h3>
+                <button onclick="closeLogModal()" class="text-3xl text-slate-400 hover:text-red-500 px-2">&times;</button>
+            </div>
+            
+            <!-- 上方區域：筆記與輸入 (長寬比例對稱調整) -->
+            <div class="grid grid-cols-1 md:grid-cols-10 gap-4 mb-4">
+                <!-- 經營筆記 (5/10 寬度) -->
+                <div class="flex flex-col h-[220px] bg-amber-50/50 p-3 rounded-2xl border border-amber-100 md:col-span-5">
+                    <div class="flex items-center justify-between mb-2">
+                        <label class="text-[10px] font-black text-amber-600 uppercase flex items-center gap-1">⭐ 特質與筆記</label>
+                        <button onclick="updateAdminNoteInModal()" class="px-2 py-1 bg-amber-500 text-white rounded-lg text-[9px] font-black shadow-sm">儲存筆記</button>
+                    </div>
+                    <textarea id="modalAdminNote" class="w-full flex-1 bg-white border border-amber-200 rounded-xl p-2 text-xs font-bold outline-none resize-none custom-scroll" placeholder="記錄個性偏好、特殊忌諱..."></textarea>
+                    <!-- 特質筆記快速標籤 (更新為指定內容與圖案) -->
+                    <div class="flex flex-wrap gap-1 mt-2">
+                        <button onclick="insertQuick('modalAdminNote', '📞 晚點再打')" class="quick-insert-btn">晚點再打</button>
+                        <button onclick="insertQuick('modalAdminNote', '📅 隔日再打')" class="quick-insert-btn">隔日再打</button>
+                        <button onclick="insertQuick('modalAdminNote', '🌱 持續經營')" class="quick-insert-btn green">持續經營</button>
+                        <button onclick="insertQuick('modalAdminNote', '🔍 需求探索')" class="quick-insert-btn blue">需求探索</button>
+                        <button onclick="insertQuick('modalAdminNote', '⏹️ 不買了')" class="quick-insert-btn red">不買了</button>
+                        <button onclick="insertQuick('modalAdminNote', '🔇 沒需求')" class="quick-insert-btn">沒需求</button>
+                    </div>
+                </div>
+                <!-- 接洽內容 (5/10 寬度) -->
+                <div class="flex flex-col h-[220px] bg-emerald-50/50 p-3 rounded-2xl border border-emerald-100 md:col-span-5">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-2">
+                            <label class="text-[10px] font-black text-emerald-600 uppercase" id="logFormTitle">✍️ 新增接洽紀錄</label>
+                            <input type="date" id="logDate" class="text-[9px] font-bold bg-white border-emerald-200 rounded-lg px-2 py-1 outline-none">
+                        </div>
+                        <button onclick="saveNewLog()" id="btnSaveLog" class="px-3 py-1 bg-emerald-600 text-white rounded-lg text-[10px] font-black shadow-sm">儲存日誌</button>
+                    </div>
+                    <textarea id="newLogContent" class="w-full flex-1 bg-white border border-emerald-200 rounded-xl p-2 text-xs font-bold outline-none resize-none custom-scroll" placeholder="談話內容、看屋反饋..."></textarea>
+                    <input type="hidden" id="editingLogId" value="">
+                    <!-- 日誌快速標籤 -->
+                    <div class="flex flex-wrap gap-1 mt-2">
+                        <button onclick="insertQuick('newLogContent', '📞 未接電話')" class="quick-insert-btn">未接電話</button>
+                        <button onclick="insertQuick('newLogContent', '📵 直掛電話')" class="quick-insert-btn">直掛電話</button>
+                        <button onclick="insertQuick('newLogContent', '📠 語音信箱')" class="quick-insert-btn">語音信箱</button>
+                        <button onclick="insertQuick('newLogContent', '📵 電話超聯')" class="quick-insert-btn red">電話超聯</button>
+                        <button onclick="insertQuick('newLogContent', '🏠 預約帶看')" class="quick-insert-btn blue">預約帶看</button>
+                        <button onclick="insertQuick('newLogContent', '🎉 買到了')" class="quick-insert-btn amber">買到了</button>
+                        <button onclick="insertQuick('newLogContent', '⏹️ 沒需求')" class="quick-insert-btn">沒需求</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 下方區域：歷史清單 (增加高度) -->
+            <div class="flex-1 overflow-hidden flex flex-col bg-slate-50 p-4 rounded-3xl border border-slate-200 max-w-4xl mx-auto w-full">
+                <label class="text-[10px] font-black text-slate-400 mb-2 uppercase tracking-widest italic">📋 歷史接洽清單 (點擊紀錄可編輯)</label>
+                <div class="flex-1 overflow-y-auto custom-scroll space-y-2 pr-1" id="logHistoryList"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-8 py-3 rounded-2xl hidden z-[100] text-xs font-black shadow-2xl"></div>
+
+    <script>
+        let buyers = JSON.parse(localStorage.getItem('crm_buyers_v3_2')) || [];
+        let currentClientIndex = -1;
+
+        const statusOptions = ['經營中', 'A買', '失聯中', '帶看過', 'LINE好友', '不經營'];
+        const statusColors = {
+            '經營中': 'bg-blue-100 text-blue-600',
+            'A買': 'bg-emerald-100 text-emerald-600',
+            '失聯中': 'bg-slate-100 text-slate-400',
+            '帶看過': 'bg-orange-100 text-orange-600',
+            'LINE好友': 'bg-green-100 text-green-600',
+            '不經營': 'bg-slate-800 text-white'
+        };
+
+        function parseRange(str) {
+            if (!str) return null;
+            const parts = str.toString().split(/[-~ ]+/).map(p => parseFloat(p)).filter(p => !isNaN(p));
+            if (parts.length === 0) return null;
+            if (parts.length === 1) return { min: parts[0], max: parts[0] };
+            return { min: Math.min(...parts), max: Math.max(...parts) };
+        }
+
+        function checkOverlap(valStr, minBound, maxBound) {
+            const range = parseRange(valStr);
+            if (!range) return false;
+            const checkMin = minBound === null ? -Infinity : minBound;
+            const checkMax = maxBound === null ? Infinity : maxBound;
+            return range.min <= checkMax && range.max >= checkMin;
+        }
+
+        function copy(text, label) {
+            if (!text || text === '') return;
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast(`📋 已複製 ${label}`);
+        }
+
+        function openMap(query) {
+            if (!query || query === '') return;
+            window.open(`https://www.google.com/maps/search/${encodeURIComponent(query)}`, '_blank');
+        }
+
+        function formatRoom(val) {
+            if (!val) return '0房0衛';
+            let parts = val.toString().split(/[/／]/);
+            return `${parts[0] || '0'}房${parts[1] || '0'}衛`;
+        }
+
+        function getGenderClass(name) {
+            if (name.includes('小姐')) return 'border-female';
+            if (name.includes('先生')) return 'border-male';
+            return 'border-other';
+        }
+
+        function d(v) { 
+            return (v !== undefined && v !== null && v.trim() !== '') 
+                ? v 
+                : '<span class="text-empty">(未填)</span>'; 
+        }
+
+        function updateQuickStatus(idx, newStatus) {
+            buyers[idx].status = newStatus;
+            save(); render();
+            showToast(`📍 狀態變更：${newStatus}`);
+        }
+
+        function insertQuick(id, text) {
+            const area = document.getElementById(id);
+            const start = area.selectionStart;
+            const end = area.selectionEnd;
+            const val = area.value;
+            const space = (val.length > 0 && val[start-1] !== ' ' && val[start-1] !== '\n') ? ' ' : '';
+            area.value = val.substring(0, start) + space + text + val.substring(end);
+            area.focus();
+            const newPos = start + space.length + text.length;
+            area.setSelectionRange(newPos, newPos);
+        }
+
+        function render() {
+            const container = document.getElementById('dataList');
+            const kw = document.getElementById('searchInput').value.toLowerCase();
+            const fStatus = document.getElementById('filterStatus').value;
+            const fType = document.getElementById('filterType').value;
+            const fBudget = document.getElementById('filterBudget').value;
+            const fRoom = document.getElementById('filterRoom').value;
+            const fFloor = document.getElementById('filterFloor').value;
+            const fAge = document.getElementById('filterAge').value;
+            const fSize = document.getElementById('filterSize').value;
+            const fParking = document.getElementById('filterParking').value;
+
+            const filtered = buyers.filter(b => {
+                const logMatch = b.logs?.some(l => l.content.toLowerCase().includes(kw));
+                const adminMatch = b.adminNote?.toLowerCase().includes(kw);
+                const textMatch = `${b.name}${b.phone}${b.area}${b.note}${b.address}${b.line}`.toLowerCase().includes(kw);
+                if (!textMatch && !logMatch && !adminMatch) return false;
+                if (fStatus !== '全部' && b.status !== fStatus) return false;
+                if (fType !== '全部' && b.type !== fType) return false;
+                if (fBudget !== '不限') {
+                    if (fBudget === '1000↓' && !checkOverlap(b.budget, 0, 1000)) return false;
+                    if (fBudget === '1000-2500' && !checkOverlap(b.budget, 1000, 2500)) return false;
+                    if (fBudget === '2500-5000' && !checkOverlap(b.budget, 2500, 5000)) return false;
+                    if (fBudget === '5000↑' && !checkOverlap(b.budget, 5000, 99999)) return false;
+                }
+                if (fRoom !== '不限') {
+                    const rooms = parseInt(b.roomRange?.toString().split(/[/／]/)[0]) || 0;
+                    if (fRoom === '4' && rooms < 4) return false;
+                    if (fRoom !== '4' && rooms != parseInt(fRoom)) return false;
+                }
+                if (fFloor !== '不限') {
+                    if (fFloor === '1-5' && !checkOverlap(b.floor, 1, 5)) return false;
+                    if (fFloor === '6-12' && !checkOverlap(b.floor, 6, 12)) return false;
+                    if (fFloor === '13' && !checkOverlap(b.floor, 13, 999)) return false;
+                }
+                if (fAge !== '不限') {
+                    if (fAge === '5' && !checkOverlap(b.age, 0, 5)) return false;
+                    if (fAge === '5-15' && !checkOverlap(b.age, 5, 15)) return false;
+                    if (fAge === '15-30' && !checkOverlap(b.age, 15, 30)) return false;
+                    if (fAge === '30' && !checkOverlap(b.age, 30, 999)) return false;
+                }
+                if (fSize !== '不限') {
+                    if (fSize === '25↓' && !checkOverlap(b.size, 0, 25)) return false;
+                    if (fSize === '25-45' && !checkOverlap(b.size, 25, 45)) return false;
+                    if (fSize === '45-65' && !checkOverlap(b.size, 45, 65)) return false;
+                    if (fSize === '65↑' && !checkOverlap(b.size, 65, 9999)) return false;
+                }
+                if (fParking !== '不限' && fParking !== '其他') {
+                    if (b.parking !== fParking) return false;
+                } else if (fParking === '其他') {
+                    if (['坡道平面', '坡道機械'].includes(b.parking)) return false;
+                }
+                return true;
+            });
+
+            container.innerHTML = filtered.map(b => {
+                const idx = buyers.indexOf(b);
+                const genderClass = getGenderClass(b.name);
+                const areaTags = b.area ? b.area.split(/\s+/).filter(t => t) : [];
+                const noteTags = b.note ? b.note.split(/\s+/).filter(t => t) : [];
+                const latestLog = b.logs && b.logs.length > 0 ? b.logs[0] : null;
+
+                return `
+                    <div class="card p-5 md:p-6 ${genderClass} relative overflow-hidden transition-all duration-300">
+                        <div class="absolute top-5 right-5 flex items-center">
+                            <span class="bg-blue-600 text-white text-[10px] md:text-xs font-black px-3 py-1.5 rounded-full shadow-lg">💰 ${b.budget || '0'}萬</span>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-x-4 gap-y-3 mb-4 pr-16 md:pr-24">
+                            <div class="flex items-center gap-2">
+                                <span onclick="copy('${b.code || ''}', '簡碼')" class="bg-slate-800 text-white text-[9px] px-2 py-0.5 rounded-full font-black cursor-pointer hover:bg-blue-600 shrink-0">${b.code || 'NO'}</span>
+                                <h3 onclick="copy('${b.name}', '姓名')" class="text-lg md:text-xl font-black text-slate-900 shrink-0 cursor-pointer hover:text-blue-600 transition-colors">${b.name}</h3>
+                            </div>
+                            
+                            <div class="relative shrink-0">
+                                <select onchange="updateQuickStatus(${idx}, this.value)" class="status-select ${statusColors[b.status]}">
+                                    ${statusOptions.map(opt => `<option value="${opt}" ${b.status === opt ? 'selected' : ''}>${opt}</option>`).join('')}
+                                </select>
+                            </div>
+
+                            <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs font-bold text-slate-500 w-full md:w-auto mt-1 md:mt-0">
+                                <span onclick="copy('${b.phone}', '電話')" class="copy-hint flex items-center gap-1 hover:text-blue-500">
+                                    <span class="text-blue-500">📞</span> ${d(b.phone)}
+                                </span>
+                                <span onclick="copy('${b.line}', 'LINE')" class="copy-hint flex items-center gap-1 hover:text-green-500">
+                                    <span class="text-green-500">💬</span> ${d(b.line)}
+                                </span>
+                                <span onclick="openMap('${b.address}')" class="copy-hint flex items-center gap-1 hover:text-red-500 max-w-full overflow-hidden text-ellipsis">
+                                    <span class="text-red-500">📍</span> ${d(b.address)}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="info-pill">🏠 ${b.type || '房屋'}</span>
+                            <span class="info-pill">🛏️ ${formatRoom(b.roomRange)}</span>
+                            <span class="info-pill">📏 ${b.size || '0'}坪</span>
+                            <span class="info-pill">🏢 ${b.floor || '0'}樓</span>
+                            <span class="info-pill">🚗 ${b.parking || '車位'}</span>
+                            <span class="info-pill">⌛ ${b.age || '0'}年</span>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-1.5 mb-4">
+                            ${areaTags.map(t => `<span onclick="openMap('${t}')" class="area-tag">🗺️ ${t}</span>`).join('')}
+                            ${noteTags.map(t => `<span class="note-tag"># ${t}</span>`).join('')}
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-5">
+                            ${b.adminNote ? `<div onclick="openLogModal(${idx})" class="bg-amber-50/50 p-2.5 rounded-xl border border-amber-200 text-[10px] md:text-[11px] font-bold text-slate-600 italic line-clamp-2 cursor-pointer">⭐ 筆記: ${b.adminNote}</div>` : ''}
+                            ${latestLog ? `<div onclick="openLogModal(${idx})" class="bg-emerald-50/50 p-2.5 rounded-xl border border-emerald-100 text-[10px] md:text-[11px] font-bold text-slate-600 line-clamp-2 cursor-pointer">📅 ${latestLog.timestamp}: ${latestLog.content}</div>` : ''}
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-4 border-t border-slate-50">
+                            <span class="text-[8px] md:text-[9px] font-bold text-slate-300 uppercase tracking-widest italic order-2 sm:order-1">SINCE: ${b.createdAt || '-'}</span>
+                            <div class="flex flex-wrap gap-2 w-full sm:w-auto order-1 sm:order-2">
+                                <button onclick="editItem(${idx})" class="flex-1 sm:flex-none px-4 py-2.5 bg-blue-50 text-blue-700 rounded-xl text-xs font-black hover:bg-blue-100 border border-blue-100">編輯需求</button>
+                                <button onclick="openLogModal(${idx})" class="flex-1 sm:flex-none px-4 py-2.5 bg-blue-600 text-white rounded-xl text-xs font-black shadow-md hover:bg-blue-700">對話紀錄 / 筆記</button>
+                                <button onclick="deleteBuyer(${idx})" class="px-3 py-2.5 bg-slate-50 text-slate-400 rounded-xl text-xs font-bold hover:bg-red-50 hover:text-red-400">刪除</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('') || '<div class="card p-12 text-center text-slate-400 font-bold italic">找不到符合條件的客戶</div>';
+        }
+
+        document.getElementById('mainForm').onsubmit = function(e) {
+            e.preventDefault();
+            const idx = parseInt(document.getElementById('editIndex').value);
+            const data = {
+                name: document.getElementById('inputName').value,
+                code: document.getElementById('inputCode').value,
+                phone: document.getElementById('inputPhone').value,
+                line: document.getElementById('inputLine').value,
+                address: document.getElementById('inputAddress').value,
+                status: document.getElementById('inputStatus').value,
+                budget: document.getElementById('inputBudget').value,
+                type: document.getElementById('inputType').value,
+                parking: document.getElementById('inputParking').value,
+                roomRange: document.getElementById('inputRoomRange').value,
+                floor: document.getElementById('inputFloor').value,
+                size: document.getElementById('inputSize').value,
+                age: document.getElementById('inputAge').value,
+                area: document.getElementById('inputArea').value,
+                note: document.getElementById('inputNote').value,
+                createdAt: idx === -1 ? new Date().toLocaleDateString() : buyers[idx].createdAt,
+                adminNote: idx === -1 ? '' : (buyers[idx].adminNote || ''),
+                logs: idx === -1 ? [] : (buyers[idx].logs || [])
+            };
+            if (idx === -1) buyers.unshift(data); else buyers[idx] = data;
+            save(); resetForm(); render(); showToast('✅ 儲存成功');
+        };
+
+        function deleteBuyer(idx) { if(confirm('確定要永久刪除此客戶嗎？')) { buyers.splice(idx, 1); save(); render(); } }
+
+        function openLogModal(idx) {
+            currentClientIndex = idx;
+            const b = buyers[idx];
+            document.getElementById('logModalTitle').innerText = `${b.name} - 客戶經營細節`;
+            document.getElementById('modalAdminNote').value = b.adminNote || '';
+            document.getElementById('logModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; 
+            resetLogForm(); renderLogs();
+        }
+
+        function closeLogModal() { document.getElementById('logModal').classList.add('hidden'); document.body.style.overflow = 'auto'; }
+        
+        function saveNewLog() {
+            const content = document.getElementById('newLogContent').value.trim();
+            const logDateVal = document.getElementById('logDate').value;
+            const logId = document.getElementById('editingLogId').value;
+            if(!content) return;
+            const logs = buyers[currentClientIndex].logs || [];
+            if (logId) {
+                const idx = logs.findIndex(l => l.id == logId);
+                if (idx !== -1) { logs[idx].content = content; logs[idx].timestamp = logDateVal; }
+            } else {
+                logs.unshift({ id: Date.now(), timestamp: logDateVal, content });
+            }
+            logs.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+            buyers[currentClientIndex].logs = logs;
+            save(); renderLogs(); resetLogForm(); render();
+            showToast('✅ 接洽日誌已儲存');
+        }
+
+        function renderLogs() {
+            const list = document.getElementById('logHistoryList');
+            const logs = buyers[currentClientIndex].logs || [];
+            list.innerHTML = logs.map(l => `
+                <div class="p-3 bg-white rounded-xl border border-slate-100 flex flex-col md:flex-row gap-2 md:gap-4 items-start shadow-sm w-full group hover:border-blue-200 transition-colors cursor-pointer" onclick="editLog(${l.id})">
+                    <div class="min-w-[85px] text-[10px] font-black text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg text-center">${l.timestamp}</div>
+                    <div class="flex-1 text-[13px] font-bold text-slate-700 whitespace-pre-wrap leading-relaxed">${l.content}</div>
+                    <div class="flex gap-1 w-full md:w-auto mt-2 md:mt-0 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button onclick="event.stopPropagation(); editLog(${l.id})" class="flex-1 md:flex-none px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-[9px] font-black">編輯</button>
+                        <button onclick="event.stopPropagation(); deleteLog(${l.id})" class="flex-1 md:flex-none px-3 py-1.5 bg-red-50 text-red-400 rounded-lg text-[9px] font-black">刪除</button>
+                    </div>
+                </div>
+            `).join('') || '<div class="text-center text-slate-300 py-10 font-bold italic">尚無歷史紀錄</div>';
+        }
+
+        function deleteLog(logId) { if(confirm('刪除這筆接洽紀錄？')) { buyers[currentClientIndex].logs = buyers[currentClientIndex].logs.filter(l => l.id != logId); save(); renderLogs(); render(); } }
+
+        function editLog(logId) {
+            const log = buyers[currentClientIndex].logs.find(l => l.id == logId);
+            if(log) {
+                document.getElementById('newLogContent').value = log.content;
+                document.getElementById('logDate').value = log.timestamp;
+                document.getElementById('editingLogId').value = log.id;
+                document.getElementById('logFormTitle').innerText = '📝 修改紀錄';
+                document.getElementById('btnSaveLog').innerText = '更新';
+                document.getElementById('newLogContent').focus();
+            }
+        }
+
+        function updateAdminNoteInModal() {
+            buyers[currentClientIndex].adminNote = document.getElementById('modalAdminNote').value;
+            save(); render(); showToast('⭐ 客戶特質筆記已儲存');
+        }
+
+        function editItem(idx) {
+            const b = buyers[idx];
+            document.getElementById('editIndex').value = idx;
+            document.getElementById('inputName').value = b.name;
+            document.getElementById('inputCode').value = b.code || '';
+            document.getElementById('inputPhone').value = b.phone || '';
+            document.getElementById('inputLine').value = b.line || '';
+            document.getElementById('inputAddress').value = b.address || '';
+            document.getElementById('inputStatus').value = b.status;
+            document.getElementById('inputBudget').value = b.budget || '';
+            document.getElementById('inputType').value = b.type || '電梯大樓';
+            document.getElementById('inputParking').value = b.parking || '車位不限';
+            document.getElementById('inputRoomRange').value = b.roomRange || '';
+            document.getElementById('inputFloor').value = b.floor || '';
+            document.getElementById('inputSize').value = b.size || '';
+            document.getElementById('inputAge').value = b.age || '';
+            document.getElementById('inputArea').value = b.area || '';
+            document.getElementById('inputNote').value = b.note || '';
+            document.getElementById('formTitle').innerText = '📝 編輯客戶需求';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('inputName').focus();
+        }
+
+        function resetForm() { document.getElementById('mainForm').reset(); document.getElementById('editIndex').value = "-1"; document.getElementById('formTitle').innerText = '新增買方'; }
+        function resetLogForm() { document.getElementById('newLogContent').value = ''; document.getElementById('logDate').valueAsDate = new Date(); document.getElementById('editingLogId').value = ''; document.getElementById('logFormTitle').innerText = '✍️ 新增紀錄'; document.getElementById('btnSaveLog').innerText = '儲存日誌'; }
+        function save() { localStorage.setItem('crm_buyers_v3_2', JSON.stringify(buyers)); }
+        function showToast(m) { const t = document.getElementById('toast'); t.innerHTML = m; t.classList.remove('hidden'); setTimeout(() => t.classList.add('hidden'), 2000); }
+
+        window.onload = render;
+    </script>
+</body>
+</html>
