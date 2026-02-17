@@ -51,6 +51,8 @@
         .quick-insert-btn.green { color: #16a34a; border-color: #dcfce7; }
         .quick-insert-btn.amber { color: #d97706; border-color: #fef3c7; }
         .quick-insert-btn.red { color: #ef4444; border-color: #fee2e2; }
+
+        .data-manage-btn { padding: 8px 16px; font-size: 12px; font-weight: 800; border-radius: 12px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
     </style>
 </head>
 <body class="p-3 md:p-6">
@@ -58,7 +60,16 @@
     <div class="max-w-7xl mx-auto">
         <header class="flex justify-between items-center mb-6 md:mb-8">
             <h1 class="text-2xl md:text-3xl font-black text-slate-900 italic tracking-tighter">CRM <span class="text-blue-600">PRO</span></h1>
-            <div class="text-[10px] font-bold text-slate-400 bg-white px-3 py-1 rounded-full border border-slate-100">智慧客管系統 v3.3</div>
+            <div class="flex items-center gap-3">
+                <div class="text-[10px] font-bold text-slate-400 bg-white px-3 py-1 rounded-full border border-slate-100 hidden md:block">智慧客管系統 v3.5</div>
+                <div class="flex gap-2">
+                    <button onclick="exportToCSV()" class="data-manage-btn bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">📤 匯出 CSV</button>
+                    <label class="data-manage-btn bg-slate-800 text-white cursor-pointer hover:bg-slate-900">
+                        📥 匯入 CSV
+                        <input type="file" id="importFile" accept=".csv" class="hidden" onchange="importFromCSV(this)">
+                    </label>
+                </div>
+            </div>
         </header>
 
         <main class="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
@@ -173,16 +184,14 @@
                 <button onclick="closeLogModal()" class="text-3xl text-slate-400 hover:text-red-500 px-2">&times;</button>
             </div>
             
-            <!-- 上方區域：筆記與輸入 (長寬比例對稱調整) -->
             <div class="grid grid-cols-1 md:grid-cols-10 gap-4 mb-4">
-                <!-- 經營筆記 (5/10 寬度) -->
+                <!-- 經營筆記 -->
                 <div class="flex flex-col h-[220px] bg-amber-50/50 p-3 rounded-2xl border border-amber-100 md:col-span-5">
                     <div class="flex items-center justify-between mb-2">
                         <label class="text-[10px] font-black text-amber-600 uppercase flex items-center gap-1">⭐ 特質與筆記</label>
                         <button onclick="updateAdminNoteInModal()" class="px-2 py-1 bg-amber-500 text-white rounded-lg text-[9px] font-black shadow-sm">儲存筆記</button>
                     </div>
                     <textarea id="modalAdminNote" class="w-full flex-1 bg-white border border-amber-200 rounded-xl p-2 text-xs font-bold outline-none resize-none custom-scroll" placeholder="記錄個性偏好、特殊忌諱..."></textarea>
-                    <!-- 特質筆記快速標籤 (更新為指定內容與圖案) -->
                     <div class="flex flex-wrap gap-1 mt-2">
                         <button onclick="insertQuick('modalAdminNote', '📞 晚點再打')" class="quick-insert-btn">晚點再打</button>
                         <button onclick="insertQuick('modalAdminNote', '📅 隔日再打')" class="quick-insert-btn">隔日再打</button>
@@ -192,7 +201,7 @@
                         <button onclick="insertQuick('modalAdminNote', '🔇 沒需求')" class="quick-insert-btn">沒需求</button>
                     </div>
                 </div>
-                <!-- 接洽內容 (5/10 寬度) -->
+                <!-- 接洽內容 -->
                 <div class="flex flex-col h-[220px] bg-emerald-50/50 p-3 rounded-2xl border border-emerald-100 md:col-span-5">
                     <div class="flex items-center justify-between mb-2">
                         <div class="flex items-center gap-2">
@@ -203,7 +212,6 @@
                     </div>
                     <textarea id="newLogContent" class="w-full flex-1 bg-white border border-emerald-200 rounded-xl p-2 text-xs font-bold outline-none resize-none custom-scroll" placeholder="談話內容、看屋反饋..."></textarea>
                     <input type="hidden" id="editingLogId" value="">
-                    <!-- 日誌快速標籤 -->
                     <div class="flex flex-wrap gap-1 mt-2">
                         <button onclick="insertQuick('newLogContent', '📞 未接電話')" class="quick-insert-btn">未接電話</button>
                         <button onclick="insertQuick('newLogContent', '📵 直掛電話')" class="quick-insert-btn">直掛電話</button>
@@ -216,7 +224,6 @@
                 </div>
             </div>
             
-            <!-- 下方區域：歷史清單 (增加高度) -->
             <div class="flex-1 overflow-hidden flex flex-col bg-slate-50 p-4 rounded-3xl border border-slate-200 max-w-4xl mx-auto w-full">
                 <label class="text-[10px] font-black text-slate-400 mb-2 uppercase tracking-widest italic">📋 歷史接洽清單 (點擊紀錄可編輯)</label>
                 <div class="flex-1 overflow-y-auto custom-scroll space-y-2 pr-1" id="logHistoryList"></div>
@@ -227,7 +234,9 @@
     <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-8 py-3 rounded-2xl hidden z-[100] text-xs font-black shadow-2xl"></div>
 
     <script>
-        let buyers = JSON.parse(localStorage.getItem('crm_buyers_v3_2')) || [];
+        // 版本控制，若有重大更新可變更 key 以防讀取錯誤
+        const STORAGE_KEY = 'crm_buyers_v3_5';
+        let buyers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
         let currentClientIndex = -1;
 
         const statusOptions = ['經營中', 'A買', '失聯中', '帶看過', 'LINE好友', '不經營'];
@@ -239,6 +248,127 @@
             'LINE好友': 'bg-green-100 text-green-600',
             '不經營': 'bg-slate-800 text-white'
         };
+
+        // --- 資料管理功能 (Excel/CSV 匯入匯出) ---
+
+        function exportToCSV() {
+            if (buyers.length === 0) {
+                showToast('⚠️ 目前沒有客戶資料可供匯出');
+                return;
+            }
+
+            // CSV 欄位定義
+            const headers = [
+                '姓名', '簡碼', '電話', 'LINE_ID', '地址', '狀態', 
+                '預算', '房屋類型', '車位', '房衛需求', '樓層', 
+                '坪數', '屋齡', '需求區域', '備註標籤', '特質筆記', 
+                '接洽紀錄', '建立日期'
+            ];
+
+            const rows = buyers.map(b => {
+                // 將接洽紀錄 logs 陣列序列化為單一字串，以便存放在儲存格中
+                const logStr = (b.logs || []).map(l => `[${l.timestamp}] ${l.content}`).join(' | ');
+                
+                return [
+                    b.name, b.code, b.phone, b.line, b.address, b.status,
+                    b.budget, b.type, b.parking, b.roomRange, b.floor,
+                    b.size, b.age, b.area, b.note, b.adminNote,
+                    logStr, b.createdAt
+                ].map(val => `"${(val || '').toString().replace(/"/g, '""')}"`).join(',');
+            });
+
+            const csvContent = "\ufeff" + headers.join(',') + "\n" + rows.join('\n'); // 加 BOM 確保 Excel 讀取中文不亂碼
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute("href", url);
+            link.setAttribute("download", `CRM_Buyers_Export_${new Date().toLocaleDateString().replace(/\//g, '-')}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('✅ 匯出完成');
+        }
+
+        function importFromCSV(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result;
+                const lines = text.split(/\r?\n/);
+                if (lines.length < 2) return;
+
+                const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+                const importedData = [];
+
+                // 解析剩餘行
+                for (let i = 1; i < lines.length; i++) {
+                    if (!lines[i].trim()) continue;
+                    
+                    // 簡易 CSV 解析器（處理引號與逗號）
+                    const values = [];
+                    let current = '';
+                    let inQuotes = false;
+                    for (let char of lines[i]) {
+                        if (char === '"' && !inQuotes) inQuotes = true;
+                        else if (char === '"' && inQuotes) inQuotes = false;
+                        else if (char === ',' && !inQuotes) { values.push(current); current = ''; }
+                        else current += char;
+                    }
+                    values.push(current);
+
+                    const b = {};
+                    const getVal = (idx) => (values[idx] || '').replace(/^"|"$/g, '').trim();
+
+                    // 按索引映射欄位 (基於 export 定義的順序)
+                    b.name = getVal(0);
+                    b.code = getVal(1);
+                    b.phone = getVal(2);
+                    b.line = getVal(3);
+                    b.address = getVal(4);
+                    b.status = getVal(5) || '經營中';
+                    b.budget = getVal(6);
+                    b.type = getVal(7);
+                    b.parking = getVal(8);
+                    b.roomRange = getVal(9);
+                    b.floor = getVal(10);
+                    b.size = getVal(11);
+                    b.age = getVal(12);
+                    b.area = getVal(13);
+                    b.note = getVal(14);
+                    b.adminNote = getVal(15);
+                    
+                    // 解析接洽紀錄
+                    const logRaw = getVal(16);
+                    b.logs = logRaw ? logRaw.split(' | ').map(entry => {
+                        const match = entry.match(/^\[(.*?)\] (.*)$/);
+                        return match ? { id: Date.now() + Math.random(), timestamp: match[1], content: match[2] } : null;
+                    }).filter(v => v) : [];
+                    
+                    b.createdAt = getVal(17) || new Date().toLocaleDateString();
+
+                    if (b.name) importedData.push(b);
+                }
+
+                if (importedData.length > 0) {
+                    if (confirm(`準備匯入 ${importedData.length} 位客戶，是否覆蓋現有資料？\n(取消則會將資料新增至現有列表末端)`)) {
+                        buyers = importedData;
+                    } else {
+                        buyers = [...buyers, ...importedData];
+                    }
+                    save();
+                    render();
+                    showToast(`✅ 已匯入 ${importedData.length} 位客戶`);
+                }
+                input.value = ''; // 清空 file input
+            };
+            reader.readAsText(file);
+        }
+
+        // --- 核心邏輯 ---
 
         function parseRange(str) {
             if (!str) return null;
@@ -484,7 +614,7 @@
                 const idx = logs.findIndex(l => l.id == logId);
                 if (idx !== -1) { logs[idx].content = content; logs[idx].timestamp = logDateVal; }
             } else {
-                logs.unshift({ id: Date.now(), timestamp: logDateVal, content });
+                logs.unshift({ id: Date.now() + Math.random(), timestamp: logDateVal, content });
             }
             logs.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
             buyers[currentClientIndex].logs = logs;
@@ -551,7 +681,7 @@
 
         function resetForm() { document.getElementById('mainForm').reset(); document.getElementById('editIndex').value = "-1"; document.getElementById('formTitle').innerText = '新增買方'; }
         function resetLogForm() { document.getElementById('newLogContent').value = ''; document.getElementById('logDate').valueAsDate = new Date(); document.getElementById('editingLogId').value = ''; document.getElementById('logFormTitle').innerText = '✍️ 新增紀錄'; document.getElementById('btnSaveLog').innerText = '儲存日誌'; }
-        function save() { localStorage.setItem('crm_buyers_v3_2', JSON.stringify(buyers)); }
+        function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(buyers)); }
         function showToast(m) { const t = document.getElementById('toast'); t.innerHTML = m; t.classList.remove('hidden'); setTimeout(() => t.classList.add('hidden'), 2000); }
 
         window.onload = render;
