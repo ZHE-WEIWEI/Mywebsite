@@ -91,7 +91,7 @@
         <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 gap-4">
             <h1 class="text-2xl md:text-3xl font-black text-slate-900 italic tracking-tighter">CRM <span class="text-blue-600">PRO</span></h1>
             <div class="flex items-center gap-3 w-full md:w-auto">
-                <div class="text-[10px] font-bold text-slate-400 bg-white px-3 py-1 rounded-full border border-slate-100 hidden lg:block">智慧客管系統 v4.6</div>
+                <div class="text-[10px] font-bold text-slate-400 bg-white px-3 py-1 rounded-full border border-slate-100 hidden lg:block">智慧客管系統 v4.7</div>
                 <div class="flex gap-2 w-full md:w-auto">
                     <button onclick="exportToCSV()" class="flex-1 md:flex-none px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded-xl text-xs font-bold hover:bg-slate-50">📤 匯出</button>
                     <label class="flex-1 md:flex-none px-4 py-2 bg-slate-800 text-white rounded-xl text-xs font-bold cursor-pointer hover:bg-slate-900 text-center">
@@ -308,9 +308,9 @@
                     <div class="flex flex-wrap gap-1.5 mt-3">
                         <button onclick="insertQuick('newLogContent', '📵 未接電話')" class="quick-insert-btn">📵 未接</button>
                         <button onclick="insertQuick('newLogContent', '📴 直掛電話')" class="quick-insert-btn">📴 直掛</button>
-                        <button onclick="insertQuick('newLogContent', '🗣️ 語音信箱')" class="quick-insert-btn">🗣️ 語音</button>
-                        <button onclick="insertQuick('newLogContent', '☎️ 電話超聯')" class="quick-insert-btn">☎️ 超聯</button>
+                        <button onclick="insertQuick('newLogContent', '🏠 案件介紹')" class="quick-insert-btn">🏠 案件介紹</button>
                         <button onclick="insertQuick('newLogContent', '🏠 預約帶看')" class="quick-insert-btn">🏠 帶看</button>
+                        <button onclick="insertQuick('newLogContent', '☎️ 電話超聯')" class="quick-insert-btn">☎️ 超聯</button>
                         <button onclick="insertQuick('newLogContent', '🎉 買到了')" class="quick-insert-btn">🎉 買到</button>
                         <button onclick="insertQuick('newLogContent', '🔇 沒需求')" class="quick-insert-btn">🔇 沒需求</button>
                     </div>
@@ -388,16 +388,10 @@
 
         function clearDateFilter() { document.getElementById('searchLogDate').value = ''; render(); }
 
-        /**
-         * 核心篩選邏輯：數值重疊檢查
-         * 修正：若 valStr 為空 (代表客戶「不限」條件)，則回傳 true 讓過濾器通過
-         */
         function checkOverlap(valStr, minBound, maxBound) {
-            if (!valStr || valStr.trim() === '') return true; // 若客戶資料為空，代表不限，直接通過篩選
-            
+            if (!valStr || valStr.trim() === '') return true;
             const parts = valStr.toString().split(/[-~ /]+/).map(p => parseFloat(p)).filter(p => !isNaN(p));
-            if (parts.length === 0) return true; // 解析不出數字也視為通過
-            
+            if (parts.length === 0) return true;
             const min = Math.min(...parts);
             const max = Math.max(...parts);
             const checkMin = minBound === null ? -Infinity : minBound;
@@ -409,7 +403,6 @@
             const container = document.getElementById('dataList');
             const kw = document.getElementById('searchInput').value.toLowerCase();
             const logDateSearch = document.getElementById('searchLogDate').value;
-            
             const fStatus = document.getElementById('filterStatus').value;
             const fType = document.getElementById('filterType').value;
             const fBudget = document.getElementById('filterBudget').value;
@@ -419,27 +412,16 @@
             const fParking = document.getElementById('filterParking').value;
 
             const filtered = buyers.filter(b => {
-                // 1. 日期搜尋
                 if (logDateSearch) {
                     const hasLog = b.logs && b.logs.some(l => l.timestamp === logDateSearch);
                     if (!hasLog) return false;
                 }
-
-                // 2. 關鍵字搜尋
                 const match = `${b.name}${b.phone}${b.area}${b.building}${b.note}${b.code}${b.address}`.toLowerCase().includes(kw) ||
                               (b.logs?.some(l => l.content.toLowerCase().includes(kw))) ||
                               (b.adminNote?.toLowerCase().includes(kw));
                 if (!match) return false;
-
-                // 3. 狀態篩選
                 if (fStatus !== '全部' && b.status !== fStatus) return false;
-
-                // 4. 類型篩選 (若客戶類型為空則不限)
-                if (fType !== '全部') {
-                    if (b.type && b.type !== '' && b.type !== fType) return false;
-                }
-
-                // 5. 預算篩選
+                if (fType !== '全部' && b.type && b.type !== '' && b.type !== fType) return false;
                 if (fBudget !== '不限') {
                     if (fBudget === '1000↓' && !checkOverlap(b.budget, 0, 1000)) return false;
                     if (fBudget === '1000-2000' && !checkOverlap(b.budget, 1000, 2000)) return false;
@@ -447,38 +429,24 @@
                     if (fBudget === '3500-5000' && !checkOverlap(b.budget, 3500, 5000)) return false;
                     if (fBudget === '5000↑' && !checkOverlap(b.budget, 5000, 999999)) return false;
                 }
-
-                // 6. 房數篩選
-                if (fRoom !== '不限') {
-                    // 若資料留白視為不限，直接通過
-                    if (b.roomRange && b.roomRange.trim() !== '') {
-                        const r = parseInt(b.roomRange) || 0;
-                        if (fRoom === '4' && r < 4) return false;
-                        if (fRoom !== '4' && r != parseInt(fRoom)) return false;
-                    }
+                if (fRoom !== '不限' && b.roomRange && b.roomRange.trim() !== '') {
+                    const r = parseInt(b.roomRange) || 0;
+                    if (fRoom === '4' && r < 4) return false;
+                    if (fRoom !== '4' && r != parseInt(fRoom)) return false;
                 }
-
-                // 7. 屋齡篩選
                 if (fAge !== '不限') {
                     if (fAge === '5' && !checkOverlap(b.age, 0, 5)) return false;
                     if (fAge === '5-15' && !checkOverlap(b.age, 5, 15)) return false;
                     if (fAge === '15-30' && !checkOverlap(b.age, 15, 30)) return false;
                     if (fAge === '30' && !checkOverlap(b.age, 30, 999)) return false;
                 }
-
-                // 8. 坪數篩選
                 if (fSize !== '不限') {
                     if (fSize === '20↓' && !checkOverlap(b.size, 0, 20)) return false;
                     if (fSize === '20-40' && !checkOverlap(b.size, 20, 40)) return false;
                     if (fSize === '40-60' && !checkOverlap(b.size, 40, 60)) return false;
                     if (fSize === '60↑' && !checkOverlap(b.size, 60, 9999)) return false;
                 }
-
-                // 9. 車位篩選
-                if (fParking !== '不限') {
-                    if (b.parking && b.parking !== '' && b.parking !== fParking) return false;
-                }
-
+                if (fParking !== '不限' && b.parking && b.parking !== '' && b.parking !== fParking) return false;
                 return true;
             });
 
@@ -490,20 +458,11 @@
                 const noteTags = b.note ? b.note.split(/\s+/).filter(t => t) : [];
                 const latestLog = b.logs && b.logs.length > 0 ? b.logs[0] : null;
 
-                const displayType = d(b.type, '不限');
-                const displayRoom = formatRoom(b.roomRange);
-                const displaySize = b.size && b.size.trim() !== '' ? `${b.size}坪` : `<span class="text-empty">不限</span>`;
-                const displayFloor = b.floor && b.floor.trim() !== '' ? `${b.floor}樓` : `<span class="text-empty">不限</span>`;
-                const displayParking = d(b.parking, '不限');
-                const displayAge = b.age && b.age.trim() !== '' ? `${b.age}年` : `<span class="text-empty">不限</span>`;
-                const displayBudget = b.budget && b.budget.trim() !== '' ? `${b.budget}萬` : `<span class="text-empty">不限</span>`;
-
                 return `
                     <div class="card p-5 md:p-6 ${genderClass} relative overflow-hidden card-hover">
                         <div class="absolute top-5 right-5 flex items-center">
-                            <span class="budget-badge">💰 ${displayBudget}</span>
+                            <span class="budget-badge">💰 ${b.budget && b.budget.trim() !== '' ? `${b.budget}萬` : `<span class="text-empty">不限</span>`}</span>
                         </div>
-                        
                         <div class="flex flex-wrap items-center gap-x-4 gap-y-3 mb-4 pr-32">
                             <div class="flex items-center gap-2">
                                 <span onclick="copy('${b.code}', '簡碼')" class="bg-slate-800 text-white text-[9px] px-2 py-0.5 rounded-full font-black cursor-copy hover:bg-blue-600">${b.code || '無代碼'}</span>
@@ -518,22 +477,19 @@
                                 ${b.address && b.address.trim() !== '' ? `<a href="https://www.google.com/maps/search/${encodeURIComponent(b.address)}" target="_blank" class="flex items-center gap-1 text-blue-600 hover:underline">📍 <span class="text-slate-500 mr-1">地址:</span>${b.address}</a>` : `<span>📍 <span class="text-slate-500 mr-1">地址:</span>${d(b.address, '未填')}</span>`}
                             </div>
                         </div>
-
                         <div class="flex flex-wrap gap-2.5 mb-4">
-                            <span class="info-pill">🏠 ${displayType}</span>
-                            <span class="info-pill">🛏️ ${displayRoom}</span>
-                            <span class="info-pill">📏 ${displaySize}</span>
-                            <span class="info-pill">🏢 ${displayFloor}</span>
-                            <span class="info-pill">🚗 ${displayParking}</span>
-                            <span class="info-pill">🕰️ ${displayAge}</span>
+                            <span class="info-pill">🏠 ${d(b.type, '不限')}</span>
+                            <span class="info-pill">🛏️ ${formatRoom(b.roomRange)}</span>
+                            <span class="info-pill">📏 ${b.size && b.size.trim() !== '' ? `${b.size}坪` : `<span class="text-empty">不限</span>`}</span>
+                            <span class="info-pill">🏢 ${b.floor && b.floor.trim() !== '' ? `${b.floor}樓` : `<span class="text-empty">不限</span>`}</span>
+                            <span class="info-pill">🚗 ${d(b.parking, '不限')}</span>
+                            <span class="info-pill">🕰️ ${b.age && b.age.trim() !== '' ? `${b.age}年` : `<span class="text-empty">不限</span>`}</span>
                         </div>
-
                         <div class="flex flex-wrap items-center gap-1.5 mb-4">
                             ${areaTags.map(t => `<a href="https://www.google.com/maps/search/${encodeURIComponent(t)}" target="_blank" class="area-tag">🗺️ ${t}</a>`).join('')}
                             ${buildingTags.map(t => `<a href="https://www.google.com/maps/search/${encodeURIComponent(t)}" target="_blank" class="building-tag">🏢 ${t}</a>`).join('')}
                             ${noteTags.map(t => `<span class="note-tag"># ${t}</span>`).join('')}
                         </div>
-
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
                             <div onclick="openLogModal(${idx})" class="bg-amber-50/50 p-3 rounded-xl border border-amber-200 text-[11px] font-bold text-slate-600 italic cursor-pointer hover:bg-amber-100/50 transition-colors">
                                 <div class="text-[9px] text-amber-500 mb-1 uppercase font-black tracking-widest">⭐ 客戶特質筆記</div>
@@ -544,7 +500,6 @@
                                 <div class="line-clamp-2">${latestLog ? `${latestLog.timestamp}: ${latestLog.content}` : '尚無接洽紀錄...'}</div>
                             </div>
                         </div>
-
                         <div class="flex justify-between items-center pt-4 border-t border-slate-50">
                             <span class="text-[9px] font-bold text-slate-300 uppercase italic">建檔: ${b.createdAt || '-'}</span>
                             <div class="flex gap-2">
@@ -673,8 +628,107 @@
         }
         function deleteBuyer(idx) { if(confirm('確定要刪除此買方所有資料？（此動作不可還原）')) { buyers.splice(idx, 1); save(); render(); } }
         function updateQuickStatus(idx, s) { buyers[idx].status = s; save(); render(); showToast(`📍 客戶狀態已切換為：${s}`); }
-        function exportToCSV() { showToast('💡 匯出功能即將推出'); }
-        function importFromCSV() { showToast('💡 匯出功能即將推出'); }
+
+        // --- 匯出功能實作 ---
+        function exportToCSV() {
+            if (buyers.length === 0) { showToast('❌ 目前沒有資料可匯出'); return; }
+            
+            const headers = ["姓名", "簡碼", "電話", "LINE", "通訊地址", "狀態", "預算", "類型", "車位", "房衛", "樓層", "坪數", "屋齡", "區域", "社區", "備註", "建檔日期", "特質筆記", "歷史日誌"];
+            
+            const rows = buyers.map(b => {
+                const logsStr = (b.logs || []).map(l => `[${l.timestamp}]${l.content}`).join(' | ');
+                return [
+                    b.name, b.code, b.phone, b.line, b.address, b.status, b.budget, b.type, b.parking, b.roomRange, b.floor, b.size, b.age, b.area, b.building, b.note, b.createdAt, b.adminNote, logsStr
+                ].map(v => `"${(v || '').toString().replace(/"/g, '""')}"`).join(",");
+            });
+
+            const csvContent = "\ufeff" + headers.join(",") + "\n" + rows.join("\n");
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `CRM_Buyers_${new Date().toISOString().slice(0,10)}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('✅ 資料匯出成功');
+        }
+
+        // --- 匯入功能實作 ---
+        function importFromCSV(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const text = e.target.result;
+                    const lines = text.split(/\r?\n/);
+                    if (lines.length < 2) throw new Error("檔案內容不足");
+
+                    const newBuyers = [];
+                    // 跳過標題列
+                    for (let i = 1; i < lines.length; i++) {
+                        if (!lines[i].trim()) continue;
+                        
+                        // 簡單的 CSV 解析（處理引號）
+                        const regex = /(".*?"|[^,]+|(?<=,)(?=,)|(?<=^)(?=,))/g;
+                        const cells = lines[i].match(regex).map(c => c.replace(/^"|"$/g, '').replace(/""/g, '"'));
+
+                        if (cells.length < 5) continue; // 至少要有基本欄位
+
+                        // 解析歷史日誌
+                        const logsStr = cells[18] || "";
+                        const logs = logsStr.split(' | ').filter(s => s).map(s => {
+                            const match = s.match(/^\[(.*?)\](.*)/);
+                            return match ? { id: Date.now() + Math.random(), timestamp: match[1], content: match[2] } : null;
+                        }).filter(l => l);
+
+                        const buyer = {
+                            name: cells[0] || "未命名",
+                            code: cells[1] || "",
+                            phone: cells[2] || "",
+                            line: cells[3] || "",
+                            address: cells[4] || "",
+                            status: cells[5] || "經營中",
+                            budget: cells[6] || "",
+                            type: cells[7] || "",
+                            parking: cells[8] || "",
+                            roomRange: cells[9] || "",
+                            floor: cells[10] || "",
+                            size: cells[11] || "",
+                            age: cells[12] || "",
+                            area: cells[13] || "",
+                            building: cells[14] || "",
+                            note: cells[15] || "",
+                            createdAt: cells[16] || new Date().toLocaleDateString(),
+                            adminNote: cells[17] || "",
+                            logs: logs
+                        };
+
+                        // 避免重複匯入（以姓名+電話為基準）
+                        const exists = buyers.some(b => b.name === buyer.name && b.phone === buyer.phone);
+                        if (!exists) {
+                            newBuyers.push(buyer);
+                        }
+                    }
+
+                    if (newBuyers.length > 0) {
+                        buyers = [...newBuyers, ...buyers];
+                        save();
+                        render();
+                        showToast(`✅ 成功匯入 ${newBuyers.length} 筆新資料`);
+                    } else {
+                        showToast('ℹ️ 未偵測到新客戶或格式不符');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    showToast('❌ 匯入失敗：請檢查檔案格式是否為本系統匯出的 CSV');
+                }
+                input.value = ""; // 清空 input
+            };
+            reader.readAsText(file);
+        }
 
         window.onload = render;
     </script>
